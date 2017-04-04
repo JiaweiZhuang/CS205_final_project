@@ -1,0 +1,14 @@
+C code for the parallel k-mean clustering algorithm.
+Doesn't depend on to any specific data set.
+
+Include:
+
+1) Homogeneous Parallel Environment
+Pure OpenMP
+Pure MPI
+Pure CUDA (single GPU)
+
+2) Heterogenous Parallel Environment 
+Hybrid OpenMP+MPI
+CUDA with multi-GPU support
+Hybrid CUDA+MPI
