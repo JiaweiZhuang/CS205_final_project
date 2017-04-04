@@ -1,0 +1,7 @@
+# new environment settings that need be added to bashrc after libraries are built
+
+# Add netCDF lib to the search path
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+
+# Add to mpicc to PATH
+export PATH=$PATH:/usr/local/openmpi/bin

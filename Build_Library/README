@@ -1,0 +1,3 @@
+Install OpenMPI and netCDF4 libraries
+
+Tested on Amazon Linux AMI. Should also work on other machines with minor modifications.
