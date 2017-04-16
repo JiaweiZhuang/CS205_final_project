@@ -162,6 +162,9 @@ int main() {
     // how many data points in the cluster
     // needed by calculating the average position of data points in each cluster
     int* cluster_sizes = (int *)malloc(N_clusters*sizeof(int)); 
+    
+    double iStart3a,iStart3b,iStart3c;
+    double iElaps3a=0,iElaps3b=0,iElaps3c=0;
 
     printf("=====Applying K-mean======\n");
     double iStart2 = seconds();
@@ -186,9 +189,13 @@ int main() {
     i_iter++;
     dist_sum_old = dist_sum_new; 
     dist_sum_new = 0.0;
+
     // E-Step: assign points to the nearest cluster center
+    iStart3a = seconds();
+    #pragma omp parallel for default(shared) schedule(static) \
+            private(i,j,k,k_best,dist,dist_min) \
+            reduction(+:dist_sum_new)
     for (i = 0; i < N_samples; i++) {
-    
         k_best = 0;//assume cluster no.0 is the nearest
         dist_min = distance(N_features, X[i], old_cluster_centers[k_best]); 
         for (k = 1; k < N_clusters; k++){
@@ -200,10 +207,11 @@ int main() {
         }
        labels[i] = k_best;
        dist_sum_new += dist_min;
-
-    }
+    } // end of E-step and omp parallel
+    iElaps3a += (seconds()-iStart3a);
 
     // M-Step first half: set the cluster centers to the mean
+    iStart3b = seconds();
     for (i = 0; i < N_samples; i++) {
         k_best = labels[i];
         cluster_sizes[k_best]++; // add one more points to this cluster
@@ -211,8 +219,10 @@ int main() {
         // here we are just calculating the sum, not the mean.
         for (j=0; j<N_features; j++)
             new_cluster_centers[k_best][j] += X[i][j]; 
-    }
+    } // end of M-Step first half
+    iElaps3b += (seconds()-iStart3b);
 
+    iStart3c = seconds();
     // M-Step second half: convert the sum to the mean
     for (k=0; k<N_clusters; k++) {
             for (j=0; j<N_features; j++) {
@@ -224,7 +234,8 @@ int main() {
                new_cluster_centers[k][j] = 0.0;//for the next iteration
             }
             cluster_sizes[k] = 0;//for the next iteration
-    }
+    } // end of M-Step second half
+    iElaps3c += (seconds()-iStart3c);
 
     } while( i_iter==1 || ((dist_sum_old - dist_sum_new > TOL)&&i_iter<MAX_ITER) ); 
     //end of K-mean stepping
@@ -247,7 +258,10 @@ int main() {
 
     // print summary
     printf("Best inertia: %f \n",inert_best);
-    printf("Kmean time use (ms): %f \n", iElaps2*1000.0);
+    printf("Kmean total time use (ms): %f \n", iElaps2*1000.0);
+    printf("E-step time use (ms): %f \n", iElaps3a*1000.0);
+    printf("M-step-1st-half time use (ms): %f \n", iElaps3b*1000.0);
+    printf("M-step-2nd-half time use (ms): %f \n", iElaps3c*1000.0);
     printf("I/O time use (ms): %f \n", iElaps1*1000.0);
 
     return 0;
