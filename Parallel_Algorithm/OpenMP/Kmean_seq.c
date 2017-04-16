@@ -201,16 +201,19 @@ int main() {
        labels[i] = k_best;
        dist_sum_new += dist_min;
 
-    // M-Step (half): set the cluster centers to the mean
-    cluster_sizes[k_best]++; // add one more points to this cluster
-    // As the total number of samples in each cluster is not known yet,
-    // here we are just calculating the sum, not the mean.
-    for (j=0; j<N_features; j++)
-        new_cluster_centers[k_best][j] += X[i][j];
+    }
 
-    } //end if E-Step and half M-Step
+    // M-Step first half: set the cluster centers to the mean
+    for (i = 0; i < N_samples; i++) {
+        k_best = labels[i];
+        cluster_sizes[k_best]++; // add one more points to this cluster
+        // As the total number of samples in each cluster is not known yet,
+        // here we are just calculating the sum, not the mean.
+        for (j=0; j<N_features; j++)
+            new_cluster_centers[k_best][j] += X[i][j]; 
+    }
 
-    // M-Step-continued: convert the sum to the mean
+    // M-Step second half: convert the sum to the mean
     for (k=0; k<N_clusters; k++) {
             for (j=0; j<N_features; j++) {
 
@@ -229,10 +232,12 @@ int main() {
     //printf("Final inertia: %f, iteration: %d \n",dist_sum_new,i_iter);
 
     // record the best results
-    if (dist_sum_new < inert_best) 
+    if (dist_sum_new < inert_best) {
         inert_best = dist_sum_new;
         for (i = 0; i < N_samples; i++)
             labels_best[i] = labels[i];
+    }
+
     } //end of one repeated run
     double iElaps2 = seconds() - iStart2;
 
