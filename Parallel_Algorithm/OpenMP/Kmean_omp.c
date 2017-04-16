@@ -1,9 +1,9 @@
 #include "../shared/timing.h" //for timer seconds()
+#include "../shared/make_2D_array.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <float.h> //for FLT_MAX
 #include <netcdf.h>
-
 
 /* This is the name of the data file we will read. */
 #define FILE_NAME "../test_data/Blobs_smp20000_fea30_cls8.nc"
@@ -14,29 +14,6 @@
  * non-zero status. */
 #define ERRCODE 2
 #define ERR(e) {printf("Error: %s\n", nc_strerror(e)); exit(ERRCODE);}
-
-/* For dynamically allocating 2D array in pure-C environment.
-Unlke in HW2, the array here is contagious!
-See:
-http://stackoverflow.com/questions/33794657/how-to-pass-a-2d-array-to-a-function-in-c-when-the-array-is-formatted-like-this
-http://stackoverflow.com/questions/5901476/sending-and-receiving-2d-array-over-mpi
-*/
-float** Make2DFloatArray(int rows, int cols) {
-    float *data = (float *)malloc(rows*cols*sizeof(float));
-    float **array= (float **)malloc(rows*sizeof(float*));
-    for (int i=0; i<rows; i++)
-        array[i] = &(data[cols*i]);
-
-    return array;
-}
-int** Make2DIntArray(int rows, int cols) {
-    int *data = (int *)malloc(rows*cols*sizeof(int));
-    int **array= (int **)malloc(rows*sizeof(int*));
-    for (int i=0; i<rows; i++)
-        array[i] = &(data[cols*i]);
-
-    return array;
-}
 
 /* Read the input data from NetCDF file. 
  * Dynamically allocate the array based on the data size.
