@@ -13,6 +13,11 @@
 
 int main() {
 
+    /*
+    ======================================================
+    ----------------  Initialization ---------------------
+    ======================================================
+    */
     size_t N_samples,N_features,N_clusters,N_repeat;
     //i for samples; j for features; k for clusters (typically)
     int i,j,k;
@@ -40,12 +45,23 @@ int main() {
     // how many data points in the cluster
     // needed by calculating the average position of data points in each cluster
     int* cluster_sizes = (int *)malloc(N_clusters*sizeof(int)); 
-    
+
+    /*
+    ======================================================
+    ----------------  Kmean stepping ---------------------
+    ======================================================
+    */
+    printf("=====Applying K-mean======\n");
+   
+    // record timing results 
+    double iStart2,iElaps2;
     double iStart3a,iStart3b,iStart3c;
     double iElaps3a=0,iElaps3b=0,iElaps3c=0;
 
-    printf("=====Applying K-mean======\n");
-    double iStart2 = seconds();
+    /* Run the K-mean algorithm for N_repeat times with 
+     * different starting points
+     */
+    iStart2 = seconds();
     for (int i_repeat=0; i_repeat < N_repeat; i_repeat++){
 
     // guess initial centers
@@ -60,8 +76,8 @@ int main() {
     }
     }
 
-    // K-mean stepping begins here!!
-    int i_iter = 0;
+    // core K-mean stepping (Expectation-Maximization) begins here!!
+    int i_iter = 0;//record iteration counts
     dist_sum_new = 0.0;//prevent the firt iteration error
     do {
     i_iter++;
@@ -131,8 +147,13 @@ int main() {
     }
 
     } //end of one repeated run
-    double iElaps2 = seconds() - iStart2;
+    iElaps2 = seconds() - iStart2;
 
+    /*
+    ======================================================
+    ----------------  Finalization ---------------------
+    ======================================================
+    */
 
     // write data back to NetCDF file
     writeY(FILE_NAME,labels_best, inert_best);
