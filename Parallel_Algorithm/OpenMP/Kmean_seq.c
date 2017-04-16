@@ -1,7 +1,9 @@
+#include "../shared/timing.h" //for timer seconds()
 #include <stdio.h>
 #include <stdlib.h>
 #include <float.h> //for FLT_MAX
 #include <netcdf.h>
+
 
 /* This is the name of the data file we will read. */
 #define FILE_NAME "../test_data/Blobs_smp20000_fea30_cls8.nc"
@@ -91,6 +93,8 @@ int readX(float*** p_X,int*** p_GUESS,
    if ((retval = nc_close(ncid) ))
       ERR(retval);
 
+    printf("=====reading data finished======\n");
+
    return 0;
 }
 
@@ -114,17 +118,9 @@ int main() {
     float dist,dist_min,dist_sum_old,dist_sum_new,inert_best=FLT_MAX;
     
     // get input data and its size
+    double iStart1 = seconds();
     readX(&X,&GUESS,&N_samples,&N_features,&N_clusters,&N_repeat);
-
-    // check the input data
-    /*
-    for (i=0; i<N_samples; i=i+N_samples-1){
-        printf("no.%d  ",i+1);
-        for (j=0; j<N_features; j++)
-          printf("%f ",X[i][j]);
-        printf("\n");
-    }
-    */
+    double iElaps1 = seconds() - iStart1;
 
     // each data point belongs to which cluster
     // values range from 0 to N_cluster-1
@@ -140,6 +136,7 @@ int main() {
     // needed by calculating the average position of data points in each cluster
     int* cluster_sizes = (int *)malloc(N_clusters*sizeof(int)); 
 
+    double iStart2 = seconds();
     for (int i_repeat=0; i_repeat < N_repeat; i_repeat++){
 
     // guess initial centers
@@ -201,14 +198,17 @@ int main() {
     } while( i_iter==1 || ((dist_sum_old - dist_sum_new > TOL)&&i_iter<MAX_ITER) ); 
     //end of K-mean stepping
 
-    printf("Final inertia: %f, iteration: %d \n",dist_sum_new,i_iter);
+    //printf("Final inertia: %f, iteration: %d \n",dist_sum_new,i_iter);
 
     if (dist_sum_new < inert_best) 
         inert_best = dist_sum_new;
     
     } //end of one repeated run
+    double iElaps2 = seconds() - iStart2;
  
     printf("Best inertia: %f \n",inert_best);
+    printf("Kmean time use (ms): %f \n", iElaps2*1000.0);
+    printf("I/O time use (ms): %f \n", iElaps1*1000.0);
 
     return 0;
 }
