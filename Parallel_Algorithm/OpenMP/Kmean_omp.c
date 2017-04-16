@@ -192,9 +192,11 @@ int main() {
 
     // E-Step: assign points to the nearest cluster center
     iStart3a = seconds();
-    #pragma omp parallel for default(shared) schedule(static) \
+    #pragma omp parallel default(shared) \
             private(i,j,k,k_best,dist,dist_min) \
             reduction(+:dist_sum_new)
+    {
+    #pragma omp for schedule(static)
     for (i = 0; i < N_samples; i++) {
         k_best = 0;//assume cluster no.0 is the nearest
         dist_min = distance(N_features, X[i], old_cluster_centers[k_best]); 
@@ -207,7 +209,8 @@ int main() {
         }
        labels[i] = k_best;
        dist_sum_new += dist_min;
-    } // end of E-step and omp parallel
+    } // end of omp for loop
+    } // end of omp parallel region
     iElaps3a += (seconds()-iStart3a);
 
     // M-Step first half: set the cluster centers to the mean
