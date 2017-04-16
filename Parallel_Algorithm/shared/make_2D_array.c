@@ -1,5 +1,5 @@
-#include "./make_2D_array.h"
 #include <stdlib.h> //for malloc
+#include "make_2D_array.h"
 
 /* For dynamically allocating 2D array in pure-C environment.
 Unlke in HW2, the array here is contagious!

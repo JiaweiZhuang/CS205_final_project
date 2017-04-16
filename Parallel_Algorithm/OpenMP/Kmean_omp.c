@@ -1,5 +1,6 @@
 #include "../shared/timing.h" //for timer seconds()
 #include "../shared/make_2D_array.h"
+#include "../shared/ncdf_util.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <float.h> //for FLT_MAX
@@ -10,97 +11,6 @@
 #define TOL 0.0001 
 #define MAX_ITER 100 
 
-/* Handle errors by printing an error message and exiting with a
- * non-zero status. */
-#define ERRCODE 2
-#define ERR(e) {printf("Error: %s\n", nc_strerror(e)); exit(ERRCODE);}
-
-/* Read the input data from NetCDF file. 
- * Dynamically allocate the array based on the data size.
- * 
- * Why need 3-levels of pointers:
- * The first two levels are for 2D dynamic array, 
- * the last level is for modifying function arguments in place.
- * (need to pass the address)
- */
-int readX(float*** p_X,int*** p_GUESS,
-          size_t* p_N_samples,size_t* p_N_features, 
-          size_t* p_N_clusters,size_t* p_N_repeat ) {
-   int ncid, varid,dimid;
-   int retval;
-
-   /* Open the file. NC_NOWRITE tells netCDF we want read-only access
-    * to the file.*/
-   if ((retval = nc_open(FILE_NAME, NC_NOWRITE, &ncid)))
-      ERR(retval);
-
-   /* Get the size of the data for dynamical allocation*/
-   nc_inq_dimid(ncid,"N_samples",&dimid);
-   nc_inq_dimlen(ncid,dimid,p_N_samples);
-   printf("Number of samples: %d \n",*p_N_samples);
-
-   nc_inq_dimid(ncid,"N_features",&dimid);
-   nc_inq_dimlen(ncid,dimid,p_N_features);
-   printf("Number of features: %d \n",*p_N_features);
-
-   nc_inq_dimid(ncid,"N_clusters",&dimid);
-   nc_inq_dimlen(ncid,dimid,p_N_clusters);
-   printf("Number of clusters: %d \n",*p_N_clusters);
-
-   nc_inq_dimid(ncid,"N_repeat",&dimid);
-   nc_inq_dimlen(ncid,dimid,p_N_repeat);
-   printf("Number of repeated runs: %d \n",*p_N_repeat);
-
-    /* Get the varid of the data variable, based on its name. */
-   if ((retval = nc_inq_varid(ncid, "X", &varid)))
-      ERR(retval);
-   /* Read the data. */
-   *p_X = Make2DFloatArray(*p_N_samples,*p_N_features);
-   if ((retval = nc_get_var_float(ncid, varid, (*p_X)[0])))
-      ERR(retval);
-
-    /* Initial Guess*/ 
-   if ((retval = nc_inq_varid(ncid, "GUESS", &varid)))
-      ERR(retval);
-   *p_GUESS = Make2DIntArray(*p_N_repeat,*p_N_clusters);
-   if ((retval = nc_get_var_int(ncid, varid, (*p_GUESS)[0])))
-      ERR(retval);
-      
-   /*close the netcdf file*/
-   if ((retval = nc_close(ncid) ))
-      ERR(retval);
-
-    printf("=====reading data finished======\n");
-
-   return 0;
-}
-
-int writeY(int* labels, float inert) { 
-   int ncid, varid;
-   int retval;
-
-   if ((retval = nc_open(FILE_NAME, NC_WRITE, &ncid)))
-      ERR(retval);
-
-   if ((retval = nc_inq_varid(ncid, "INERT_C", &varid)))
-      ERR(retval)
-   if ((retval = nc_put_var_float(ncid, varid, &inert )))
-      ERR(retval);
-
-   if ((retval = nc_inq_varid(ncid, "Y_C", &varid)))
-      ERR(retval)
-   if ((retval = nc_put_var_int(ncid, varid, labels )))
-      ERR(retval);
-
-   /*close the netcdf file*/
-   if ((retval = nc_close(ncid) ))
-      ERR(retval);
-
-    printf("=====writting data finished======\n");
-
-   return 0;
-}
-
 // square of the distance between x1[N_features] and x2[N_features]
 float distance(int N_features,float *x1,float *x2){
     float dist=0.0;
@@ -108,7 +18,6 @@ float distance(int N_features,float *x1,float *x2){
         dist += (x1[j]-x2[j])*(x1[j]-x2[j]); 
     return(dist);
 }
-
 
 int main() {
 
@@ -122,7 +31,7 @@ int main() {
     
     // get input data and its size
     double iStart1 = seconds();
-    readX(&X,&GUESS,&N_samples,&N_features,&N_clusters,&N_repeat);
+    readX(FILE_NAME,&X,&GUESS,&N_samples,&N_features,&N_clusters,&N_repeat);
     double iElaps1 = seconds() - iStart1;
 
     // each data point belongs to which cluster
@@ -234,7 +143,7 @@ int main() {
 
 
     // write data back to NetCDF file
-    writeY(labels_best, inert_best);
+    writeY(FILE_NAME,labels_best, inert_best);
 
     // print summary
     printf("Best inertia: %f \n",inert_best);
