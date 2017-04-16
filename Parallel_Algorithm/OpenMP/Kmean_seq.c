@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <float.h> //for FLT_MAX
 #include <netcdf.h>
 
 /* This is the name of the data file we will read. */
-#define FILE_NAME "../test_data/iris_data_Kmean.nc"
+#define FILE_NAME "../test_data/Blobs_smp20000_fea30_cls8.nc"
+#define TOL 0.0001 
+#define MAX_ITER 100 
 
 /* Handle errors by printing an error message and exiting with a
  * non-zero status. */
@@ -24,6 +27,14 @@ float** Make2DFloatArray(int rows, int cols) {
 
     return array;
 }
+int** Make2DIntArray(int rows, int cols) {
+    int *data = (int *)malloc(rows*cols*sizeof(int));
+    int **array= (int **)malloc(rows*sizeof(int*));
+    for (int i=0; i<rows; i++)
+        array[i] = &(data[cols*i]);
+
+    return array;
+}
 
 /* Read the input data from NetCDF file. 
  * Dynamically allocate the array based on the data size.
@@ -33,7 +44,9 @@ float** Make2DFloatArray(int rows, int cols) {
  * the last level is for modifying function arguments in place.
  * (need to pass the address)
  */
-int readX(float*** p_X,size_t* p_N_samples,size_t* p_N_features) {
+int readX(float*** p_X,int*** p_GUESS,
+          size_t* p_N_samples,size_t* p_N_features, 
+          size_t* p_N_clusters,size_t* p_N_repeat ) {
    int ncid, varid,dimid;
    int retval;
 
@@ -51,15 +64,29 @@ int readX(float*** p_X,size_t* p_N_samples,size_t* p_N_features) {
    nc_inq_dimlen(ncid,dimid,p_N_features);
    printf("Number of features: %d \n",*p_N_features);
 
-   /* Get the varid of the data variable, based on its name. */
+   nc_inq_dimid(ncid,"N_clusters",&dimid);
+   nc_inq_dimlen(ncid,dimid,p_N_clusters);
+   printf("Number of clusters: %d \n",*p_N_clusters);
+
+   nc_inq_dimid(ncid,"N_repeat",&dimid);
+   nc_inq_dimlen(ncid,dimid,p_N_repeat);
+   printf("Number of repeated runs: %d \n",*p_N_repeat);
+
+    /* Get the varid of the data variable, based on its name. */
    if ((retval = nc_inq_varid(ncid, "X", &varid)))
       ERR(retval);
-
    /* Read the data. */
    *p_X = Make2DFloatArray(*p_N_samples,*p_N_features);
    if ((retval = nc_get_var_float(ncid, varid, (*p_X)[0])))
       ERR(retval);
 
+    /* Initial Guess*/ 
+   if ((retval = nc_inq_varid(ncid, "GUESS", &varid)))
+      ERR(retval);
+   *p_GUESS = Make2DIntArray(*p_N_repeat,*p_N_clusters);
+   if ((retval = nc_get_var_int(ncid, varid, (*p_GUESS)[0])))
+      ERR(retval);
+      
    /*close the netcdf file*/
    if ((retval = nc_close(ncid) ))
       ERR(retval);
@@ -78,24 +105,26 @@ float distance(int N_features,float *x1,float *x2){
 
 int main() {
 
-    int N_clusters=3;
-    size_t N_samples,N_features;
+    size_t N_samples,N_features,N_clusters,N_repeat;
     //i for samples; j for features; k for clusters (typically)
     int i,j,k;
-    int k_best;
+    int k_best,initial_idx;
     float** X;
-    float dist,dist_min;
+    int** GUESS;
+    float dist,dist_min,dist_sum_old,dist_sum_new,inert_best=FLT_MAX;
     
     // get input data and its size
-    readX(&X,&N_samples,&N_features);
+    readX(&X,&GUESS,&N_samples,&N_features,&N_clusters,&N_repeat);
 
     // check the input data
+    /*
     for (i=0; i<N_samples; i=i+N_samples-1){
         printf("no.%d  ",i+1);
         for (j=0; j<N_features; j++)
           printf("%f ",X[i][j]);
         printf("\n");
     }
+    */
 
     // each data point belongs to which cluster
     // values range from 0 to N_cluster-1
@@ -111,22 +140,27 @@ int main() {
     // needed by calculating the average position of data points in each cluster
     int* cluster_sizes = (int *)malloc(N_clusters*sizeof(int)); 
 
+    for (int i_repeat=0; i_repeat < N_repeat; i_repeat++){
+
     // guess initial centers
-    // use the tops elements (random guess TBD)
     for (k=0; k<N_clusters; k++){
         cluster_sizes[k] = 0; // for accumulating 
-
+        // the index of data points as the initial guess for cluster centers
+        initial_idx = GUESS[i_repeat][k]; 
         for (j=0; j<N_features; j++){
-            old_cluster_centers[k][j]=X[k][j];
+            old_cluster_centers[k][j]=X[initial_idx][j];
             //set the "new" array to 0 for accumulating
             new_cluster_centers[k][j] = 0.0;
     }
     }
 
-
     // K-mean stepping begins here!!
-    for (int step=0; step < 10; step++){
-
+    int i_iter = 0;
+    dist_sum_new = 0.0;//prevent the firt iteration error
+    do {
+    i_iter++;
+    dist_sum_old = dist_sum_new; 
+    dist_sum_new = 0.0;
     // E-Step: assign points to the nearest cluster center
     for (i = 0; i < N_samples; i++) {
     
@@ -140,15 +174,16 @@ int main() {
             }
         }
        labels[i] = k_best;
+       dist_sum_new += dist_min;
 
-    // M-Step: set the cluster centers to the mean
+    // M-Step (half): set the cluster centers to the mean
     cluster_sizes[k_best]++; // add one more points to this cluster
     // As the total number of samples in each cluster is not known yet,
     // here we are just calculating the sum, not the mean.
     for (j=0; j<N_features; j++)
         new_cluster_centers[k_best][j] += X[i][j];
 
-    }
+    } //end if E-Step and half M-Step
 
     // M-Step-continued: convert the sum to the mean
     for (k=0; k<N_clusters; k++) {
@@ -163,13 +198,17 @@ int main() {
             cluster_sizes[k] = 0;//for the next iteration
     }
 
-    // check the classification results
-    printf("\n step %d, labels: \n",step);
-    for (i=0; i<N_samples; i++){
-        printf("%d ",labels[i]);
-    }
+    } while( i_iter==1 || ((dist_sum_old - dist_sum_new > TOL)&&i_iter<MAX_ITER) ); 
+    //end of K-mean stepping
 
-    } //end of K-mean stepping
+    printf("Final inertia: %f, iteration: %d \n",dist_sum_new,i_iter);
+
+    if (dist_sum_new < inert_best) 
+        inert_best = dist_sum_new;
+    
+    } //end of one repeated run
+ 
+    printf("Best inertia: %f \n",inert_best);
 
     return 0;
 }
