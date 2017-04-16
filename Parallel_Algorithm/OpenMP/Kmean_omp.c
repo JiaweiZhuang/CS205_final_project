@@ -1,23 +1,15 @@
 #include "../shared/timing.h" //for timer seconds()
 #include "../shared/make_2D_array.h"
 #include "../shared/ncdf_util.h"
+#include "../shared/math_util.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <float.h> //for FLT_MAX
-#include <netcdf.h>
 
 /* This is the name of the data file we will read. */
 #define FILE_NAME "../test_data/Blobs_smp20000_fea30_cls8.nc"
 #define TOL 0.0001 
 #define MAX_ITER 100 
-
-// square of the distance between x1[N_features] and x2[N_features]
-float distance(int N_features,float *x1,float *x2){
-    float dist=0.0;
-    for (int j=0; j<N_features; j++)
-        dist += (x1[j]-x2[j])*(x1[j]-x2[j]); 
-    return(dist);
-}
 
 int main() {
 
