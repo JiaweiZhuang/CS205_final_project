@@ -98,6 +98,32 @@ int readX(float*** p_X,int*** p_GUESS,
    return 0;
 }
 
+int writeY(int* labels, float inert) { 
+   int ncid, varid;
+   int retval;
+
+   if ((retval = nc_open(FILE_NAME, NC_WRITE, &ncid)))
+      ERR(retval);
+
+   if ((retval = nc_inq_varid(ncid, "INERT_C", &varid)))
+      ERR(retval)
+   if ((retval = nc_put_var_float(ncid, varid, &inert )))
+      ERR(retval);
+
+   if ((retval = nc_inq_varid(ncid, "Y_C", &varid)))
+      ERR(retval)
+   if ((retval = nc_put_var_int(ncid, varid, labels )))
+      ERR(retval);
+
+   /*close the netcdf file*/
+   if ((retval = nc_close(ncid) ))
+      ERR(retval);
+
+    printf("=====writting data finished======\n");
+
+   return 0;
+}
+
 // square of the distance between x1[N_features] and x2[N_features]
 float distance(int N_features,float *x1,float *x2){
     float dist=0.0;
@@ -125,6 +151,7 @@ int main() {
     // each data point belongs to which cluster
     // values range from 0 to N_cluster-1
     int* labels = (int *)malloc(N_samples*sizeof(int));
+    int* labels_best = (int *)malloc(N_samples*sizeof(int));
 
     // The position of each cluster center.
     // Two arrays are needed as we are calculating the distance to the
@@ -136,6 +163,7 @@ int main() {
     // needed by calculating the average position of data points in each cluster
     int* cluster_sizes = (int *)malloc(N_clusters*sizeof(int)); 
 
+    printf("=====Applying K-mean======\n");
     double iStart2 = seconds();
     for (int i_repeat=0; i_repeat < N_repeat; i_repeat++){
 
@@ -200,12 +228,19 @@ int main() {
 
     //printf("Final inertia: %f, iteration: %d \n",dist_sum_new,i_iter);
 
+    // record the best results
     if (dist_sum_new < inert_best) 
         inert_best = dist_sum_new;
-    
+        for (i = 0; i < N_samples; i++)
+            labels_best[i] = labels[i];
     } //end of one repeated run
     double iElaps2 = seconds() - iStart2;
- 
+
+
+    // write data back to NetCDF file
+    writeY(labels_best, inert_best);
+
+    // print summary
     printf("Best inertia: %f \n",inert_best);
     printf("Kmean time use (ms): %f \n", iElaps2*1000.0);
     printf("I/O time use (ms): %f \n", iElaps1*1000.0);
