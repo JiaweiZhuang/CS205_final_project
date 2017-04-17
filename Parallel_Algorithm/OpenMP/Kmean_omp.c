@@ -1,10 +1,10 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <float.h> //for FLT_MAX
 #include "../shared/timing.h" //for timer seconds()
 #include "../shared/make_2D_array.h"
 #include "../shared/ncdf_util.h"
 #include "../shared/math_util.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <float.h> //for FLT_MAX
 
 /* This is the name of the data file we will read. */
 #define FILE_NAME "../test_data/Blobs_smp20000_fea30_cls8.nc"
