@@ -107,7 +107,8 @@ int main() {
 
     // how many data points in the cluster
     // needed by calculating the average position of data points in each cluster
-    int* cluster_sizes = (int *)malloc(N_clusters*sizeof(int)); 
+    int* cluster_sizes = (int *)malloc(N_clusters*sizeof(int));
+    // cluster_sizes[0] = 0; //why this will fail for rank1?
 
     /*
     ======================================================
@@ -117,6 +118,39 @@ int main() {
     MPI_Barrier(MPI_COMM_WORLD);
     if (rank == 0)
         printf("=====Applying K-mean======\n");
+
+    int i_repeat = 0;
+
+    // guess initial centers
+    if (rank==0) {
+    // only master node holds the full data X_all and the initial GUESS
+    for (k=0; k<N_clusters; k++){
+        cluster_sizes[k] = 0; // for accumulating
+        // the index of data points as the initial guess for cluster centers
+        initial_idx = GUESS[i_repeat][k];
+        for (j=0; j<N_features; j++){
+            old_cluster_centers[k][j]=X_all[initial_idx][j];
+            //set the "new" array to 0 for accumulating
+            new_cluster_centers[k][j] = 0.0;
+            }
+        }
+    }
+    if (rank==1){
+    // initialize other nodes
+    for (k=0; k<N_clusters; k++){
+        //cluster_sizes[k] = 0; 
+        for (j=0; j<N_features; j++){
+            //new_cluster_centers[k][j] = 0.0;
+            }
+        }
+    }
+
+    if(rank==0)
+        printf("master node: %f \n",old_cluster_centers[(int)N_clusters-1][(int)N_features-1]);
+    MPI_Bcast(*old_cluster_centers,N_clusters*N_features,MPI_FLOAT,0,MPI_COMM_WORLD);
+
+    // check broadcast results
+    printf("%d : %f \n",rank,old_cluster_centers[(int)N_clusters-1][(int)N_features-1]);
 
     /*
     ======================================================
