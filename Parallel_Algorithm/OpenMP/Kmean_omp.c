@@ -18,7 +18,7 @@ int main() {
     ----------------  Initialization ---------------------
     ======================================================
     */
-    size_t N_samples,N_features,N_clusters,N_repeat;
+    int N_samples,N_features,N_clusters,N_repeat;
     //i for samples; j for features; k for clusters (typically)
     int i,j,k;
     int k_best,initial_idx;

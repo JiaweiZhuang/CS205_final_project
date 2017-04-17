@@ -20,10 +20,13 @@
  * (need to pass the address)
  */
 int readX(char* FILE_NAME, float*** p_X,int*** p_GUESS,
-          size_t* p_N_samples,size_t* p_N_features,
-          size_t* p_N_clusters,size_t* p_N_repeat ) {
+          int* p_N_samples,int* p_N_features,
+          int* p_N_clusters,int* p_N_repeat ) {
    int ncid, varid,dimid;
    int retval;
+   size_t N_temp;
+
+    printf("reading data \n");
 
    /* Open the file. NC_NOWRITE tells netCDF we want read-only access
     * to the file.*/
@@ -32,19 +35,23 @@ int readX(char* FILE_NAME, float*** p_X,int*** p_GUESS,
 
    /* Get the size of the data for dynamical allocation*/
    nc_inq_dimid(ncid,"N_samples",&dimid);
-   nc_inq_dimlen(ncid,dimid,p_N_samples);
+   nc_inq_dimlen(ncid,dimid,&N_temp);
+   *p_N_samples = (int)N_temp;
    printf("Number of samples: %d \n",*p_N_samples);
 
    nc_inq_dimid(ncid,"N_features",&dimid);
-   nc_inq_dimlen(ncid,dimid,p_N_features);
+   nc_inq_dimlen(ncid,dimid,&N_temp);
+   *p_N_features = (int)N_temp;
    printf("Number of features: %d \n",*p_N_features);
 
    nc_inq_dimid(ncid,"N_clusters",&dimid);
-   nc_inq_dimlen(ncid,dimid,p_N_clusters);
+   nc_inq_dimlen(ncid,dimid,&N_temp);
+   *p_N_clusters = (int)N_temp;
    printf("Number of clusters: %d \n",*p_N_clusters);
 
    nc_inq_dimid(ncid,"N_repeat",&dimid);
-   nc_inq_dimlen(ncid,dimid,p_N_repeat);
+   nc_inq_dimlen(ncid,dimid,&N_temp);
+   *p_N_repeat = (int)N_temp;
    printf("Number of repeated runs: %d \n",*p_N_repeat);
 
     /* Get the varid of the data variable, based on its name. */

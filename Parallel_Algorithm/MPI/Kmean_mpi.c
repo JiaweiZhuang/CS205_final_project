@@ -26,7 +26,7 @@ int main() {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     //printf("hello world from process %d of %d\n", rank, size);
 
-    size_t N_samples_all,N_samples,N_features,N_clusters,N_repeat;
+    int N_samples_all,N_samples,N_features,N_clusters,N_repeat;
     //i for samples; j for features; k for clusters (typically)
     int i,j,k;
     int k_best,initial_idx;
@@ -68,8 +68,7 @@ int main() {
     TBD: use MPI_Scatterv to handle arbitrary size
     */
 
-    //convert to int to prevent error from unsigned/signed
-    N_samples = (int)N_samples_all / size; 
+    N_samples = N_samples_all / size; 
     // printf("%d, Local samples: %d \n",rank,N_samples);
 
     if (rank==0){
@@ -82,8 +81,7 @@ int main() {
 
     // check scattered results
     if (rank==size-1){
-        //convert to int to prevent error from unsigned - signed
-        printf("Last element after sacattering %d: %f \n",rank,X[(int)N_samples-1][(int)N_features-1]);
+        printf("Last element after sacattering %d: %f \n",rank,X[N_samples-1][N_features-1]);
     }
 
     double iElaps1 = MPI_Wtime() - iStart1;
@@ -108,7 +106,6 @@ int main() {
     // how many data points in the cluster
     // needed by calculating the average position of data points in each cluster
     int* cluster_sizes = (int *)malloc(N_clusters*sizeof(int));
-    // cluster_sizes[0] = 0; //why this will fail for rank1?
 
     /*
     ======================================================
@@ -138,9 +135,9 @@ int main() {
     if (rank==1){
     // initialize other nodes
     for (k=0; k<N_clusters; k++){
-        //cluster_sizes[k] = 0; 
+        cluster_sizes[k] = 0; 
         for (j=0; j<N_features; j++){
-            //new_cluster_centers[k][j] = 0.0;
+            new_cluster_centers[k][j] = 0.0;
             }
         }
     }
