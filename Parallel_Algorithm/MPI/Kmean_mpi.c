@@ -73,7 +73,7 @@ int main() {
     // printf("%d, Local samples: %d \n",rank,N_samples);
 
     if (rank==0){
-        printf("Last element in global array: %d: %f \n",X_all[N_samples_all-1][N_features-1]);
+        printf("Last element in global array: %f \n",X_all[N_samples_all-1][N_features-1]);
     }
 
     X = Make2DFloatArray(N_samples,N_features);
