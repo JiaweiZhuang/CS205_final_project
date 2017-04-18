@@ -9,7 +9,7 @@
 
 /* This is the name of the data file we will read. */
 #define FILE_NAME "../test_data/Blobs_smp20000_fea30_cls8.nc"
-#define TOL 0.0001 
+#define TOL 0.0001
 #define MAX_ITER 100 
 
 int main() {
@@ -173,6 +173,9 @@ int main() {
 
     // E-Step: assign points to the nearest cluster center
     iStart3a = MPI_Wtime();
+    #pragma omp parallel for default(shared) schedule(static)\
+            private(i,j,k,k_best,dist,dist_min) \
+            reduction(+:dist_sum_new)
     for (i = 0; i < N_samples; i++) {
         k_best = 0;//assume cluster no.0 is the nearest
         dist_min = distance(N_features, X[i], old_cluster_centers[k_best]); 
