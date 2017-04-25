@@ -6,6 +6,22 @@ Jiachen Song  <br />
 Xinyuan Wang  <br />
 Jiawei Zhuang  <br />
 
+# Table of Contents
+  * [Introduction](#introduction)
+  * [Paralleled Kmeans Algorithms](#paralleled-kmeans-algorithms)
+  * [Applications](#applications)
+  * [Advanced Features](#advanced-features)
+  
+## Introduction
+
+## Paralleled Kmeans Algorithms
+
+## Applications
+
+## Advanced Features
+  
+  
+  
 ### Parallel software solution
 We choose MPI + OpenMP/OpenACC/CUDA as our heterogenous computing environment. 
 
