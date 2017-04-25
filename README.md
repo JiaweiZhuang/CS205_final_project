@@ -6,7 +6,7 @@ Jiachen Song  <br />
 Xinyuan Wang  <br />
 Jiawei Zhuang  <br />
 
-###Parallel software solution
+### Parallel software solution
 We choose MPI + OpenMP/OpenACC/CUDA as our heterogenous computing environment. 
 
 ### Data science problem
