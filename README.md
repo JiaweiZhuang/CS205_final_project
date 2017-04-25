@@ -1,5 +1,4 @@
 # CS205 2017 Spring Final Project 
-test
 Group Members (in alphabetical order): <br /> 
 Jiahua Guo  <br />
 Jiachen Song  <br />
