@@ -28,7 +28,7 @@ k-means clustering technique is more useful than hierarchical clustering for thi
 
 In addition, this type of problems usually involves a very large dataset with very high dimensions, e.g. more than 17,000 data points with 252 dimensions in this example, therefore a simple clustering technique such as k-means is very useful.
 ![Silhouette Value](Data_Analysis/svalue.png)
-
+![Silhouette Value](Data_Analysis/T.png)
 ### Some data set options 
 (Preliminary plan. Might change in the future.)
 
