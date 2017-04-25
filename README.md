@@ -27,8 +27,9 @@ In the past, these pheonomena have been arbitrarily defined using a variety of d
 k-means clustering technique is more useful than hierarchical clustering for this type of problems, because k-means clustering easily allows for uneven groups, whereas hierachical clusetering tends to determine groups of similar sizes. 
 
 In addition, this type of problems usually involves a very large dataset with very high dimensions, e.g. more than 17,000 data points with 252 dimensions in this example, therefore a simple clustering technique such as k-means is very useful.
-![Silhouette Value](Data_Analysis/svalue.png)
-![Silhouette Value](Data_Analysis/T.png)
+![Silhouette Value](Data_Analysis/figures/svalue.png)
+![Temperature Anomaly](Data_Analysis/figures/T.png)
+![Vortex Structure](Data_Analysis/figures/PV.png)
 ### Some data set options 
 (Preliminary plan. Might change in the future.)
 
