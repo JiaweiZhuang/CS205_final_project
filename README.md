@@ -47,9 +47,6 @@ In addition, this type of problems usually involves a very large dataset with ve
 ![Temperature Anomaly](Data_Analysis/figures/T.png)
 ![Vortex Structure](Data_Analysis/figures/PV.png)
 ### Some data set options 
-(Preliminary plan. Might change in the future.)
-
-[Section1](#parallel-software-solution)
 
 Hubway system data: <br />
 https://www.thehubway.com/system-data
