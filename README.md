@@ -1,4 +1,3 @@
-test
 # CS205 2017 Spring Final Project 
 Group Members (in alphabetical order): <br /> 
 Jiahua Guo  <br />
