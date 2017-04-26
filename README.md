@@ -19,10 +19,10 @@ to significantly speed up the computing time of the clustering process, without 
 
 A typical approach for k-mean clustering is Expectation–Maximization (E–M). E-step assigns points to the nearest cluster center, while M-step set the cluster centers to the mean. 
 
-Below is an animation demonstating the Kmean algorithm, based on a wonderful [K-means visualization made by Naftali Harris ](https://www.naftaliharris.com/blog/visualizing-k-means-clustering/)
+Below is an animation demonstating the Kmean algorithm, based on a wonderful [K-means visualization made by Naftali Harris ](https://www.naftaliharris.com/blog/visualizing-k-means-clustering/).
 
 <p align="center">
-<img src="Other_Image/Kmean_illustration/Kmeans.gif" width="720">
+<img src="Other_Image/Kmean_illustration/Kmeans.gif" width="640">
 </p>
 
 ## OpenMP, MPI and hybrid MPI-OpenMP parallelization
