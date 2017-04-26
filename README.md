@@ -14,12 +14,23 @@ d>1 and the number of clusters k>1. Scientists came up with several heuristic me
 computationally-intensive, especially with huge data sets. We want to implement a parallel version of a k-means heuristic method on a cluster of machines, 
 to significantly speed up the computing time of the clustering process, without any reduction on the accuracy rate of the clustering model.
 
-# Paralleled Kmeans Algorithms
-We choose MPI + OpenMP/OpenACC/CUDA as our heterogenous computing environment. 
+# Parallel Kmeans Algorithms
 
+## OpenMP, MPI and hybrid MPI-OpenMP parallelization
+
+A typical approach for k-mean clustering is Expectation–Maximization (E–M). E-step assigns points to the nearest cluster center, while M-step set the cluster centers to the mean. 
+
+### OpenMP
+
+With OpenMP parallelization, only E-step can be directly parallelized. If M-step is directly parallelized with OpenMP pragmas, different data points might be added to one cluster at the same time, leading to Write-After-Arite (WAW) harzard. Although it is possible to make drastic modifications to parallelize the M-step, it contradicts the basic idea of OpenMP that the serial code shoud be almost untouched. Therefore, we only focus on the E-step. 
+[(View our OpenMP code)](Parallel_Algorithm/OpenMP/Kmean_omp.c)
+
+Unsurprisingly, although the E-step scales well, the M-step even gets slower because of thread overheads and finally becomes a bottlenec:
 <p align="center">
 <img src="Timing_Results/plots/OpenMP_scaling.jpg" width="720">
 </p>
+
+### MPI
 
 <p align="center">
 <img src="Timing_Results/plots/MPI_scaling.jpg" width="720">
