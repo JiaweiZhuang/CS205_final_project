@@ -19,7 +19,9 @@ We choose MPI + OpenMP/OpenACC/CUDA as our heterogenous computing environment.
 
 ![Scaling test with pure OpenMP](Timing_Results/plots/OpenMP_scaling.jpg)
 ![Scaling test with pure MPI](Timing_Results/plots/MPI_scaling.jpg)
+<p align="center">
 <img src="Timing_Results/plots/hybrid_scaling.jpg" width="480">
+</p>
 
 # Applications
 
