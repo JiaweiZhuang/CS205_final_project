@@ -1,6 +1,6 @@
 # Table of Contents
   * [Introduction](#introduction)
-  * [Paralleled Kmeans Algorithms](#paralleled-kmeans-algorithms)
+  * [Parallel Kmeans Algorithms](#parallel-kmeans-algorithms)
   * [Applications](#applications)
   * [Advanced Features](#advanced-features)
   
