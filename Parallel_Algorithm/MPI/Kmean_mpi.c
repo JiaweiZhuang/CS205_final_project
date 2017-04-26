@@ -51,7 +51,7 @@ int main() {
     else{
     /*
     MPI_Scatter needs to access *X_all in all processes
-    For non-root, we need to assign NULL for prevent memory error
+    For non-root, we need to assign NULL to prevent memory error
     */
     float* dummy_for_X_all=NULL;
     X_all = &dummy_for_X_all;
@@ -63,25 +63,56 @@ int main() {
     MPI_Bcast(&N_repeat,1,MPI_INT,0,MPI_COMM_WORLD);
     //printf("%d: %d,%d,%d,%d\n",rank,N_samples_all,N_features,N_clusters,N_repeat);
 
-    /*
-    Assume N_sample_all is divisible by size for now!
-    TBD: use MPI_Scatterv to handle arbitrary size
-    */
-
-    N_samples = N_samples_all / size; 
-    // printf("%d, Local samples: %d \n",rank,N_samples);
-
     if (rank==0){
         printf("Last element in global array: %f \n",X_all[N_samples_all-1][N_features-1]);
     }
 
+
+    // Naive Scatter: Assume N_sample_all is divisible by size   
+    /*
+    N_samples = N_samples_all / size; 
     X = Make2DFloatArray(N_samples,N_features);
     MPI_Scatter(*X_all, N_samples*N_features, MPI_FLOAT, *X,
            N_samples*N_features, MPI_FLOAT, 0, MPI_COMM_WORLD);
+    */
+
+    // Correct sactter: works for any numbers
+
+    int *sendcounts,*displs;
+    if (rank == 0){
+        int N_samples_slave = N_samples_all/size; //master node needs to know the data size for other nodes
+        N_samples = N_samples_all - N_samples_slave*(size-1);// the remaining data
+    
+        sendcounts = (int *)malloc(size*sizeof(int)); // the number of elements to send to each processor
+        displs = (int *)malloc(size*sizeof(int)); //displacement relative to sendbuf for data sent to process i
+
+        sendcounts[0]=N_samples*N_features;
+        displs[0]=0;
+        for (i=1; i<size; i++) { 
+            displs[i] = (N_samples+(i-1)*N_samples_slave)*N_features; // continous data 
+            sendcounts[i] = N_samples_slave*N_features; 
+        } 
+    }
+    else{
+        //other nodes
+        N_samples = N_samples_all/size;
+
+        sendcounts = NULL; 
+        displs = NULL;
+    }
+
+    // This allocation works for all nodes
+    X = Make2DFloatArray(N_samples,N_features);
+
+    MPI_Scatterv(*X_all, sendcounts, displs,
+                 MPI_FLOAT, *X,  N_samples*N_features,
+                 MPI_FLOAT, 0, MPI_COMM_WORLD);
+
+    //printf("%d, Local samples: %d \n",rank,N_samples);
 
     // check scattered results
     if (rank==size-1){
-        printf("Last element after sacattering %d: %f \n",rank,X[N_samples-1][N_features-1]);
+        printf("Last element after scattering %d: %f \n",rank,X[N_samples-1][N_features-1]);
     }
 
     double iElaps1 = MPI_Wtime() - iStart1;
