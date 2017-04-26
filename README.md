@@ -70,6 +70,7 @@ We have installed various software libraries to facilitate our K-mean applicatio
 
 ## The OpenMPI library
 
+We built the OpenMPI 2.1.0 upon the gcc4.8.3 compiler, to get the wrapped "mpicc" compiler. The script for building the OpenMPI library is available [here](Build_Library/openmpi_build/install_openmpi.sh)
 
 ## The NetCDF4 library for data I/O
 
