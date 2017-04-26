@@ -1,7 +1,7 @@
 #!/bin/bash
 
-np_list='1 2 4 8'
-thread_list='1 2'
+np_list='1 2 4 8 16 32 64'
+thread_list='1 2 4 8'
 
 for np in $np_list
 do

@@ -1,0 +1,126 @@
+ 
+=========================================
+=========================================
+testing with 1 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+=====Applying K-mean======
+=====writting data finished======
+Best inertia: 2308841.500000 
+Kmean total time use (ms): 2539.128065 
+E-step time use (ms): 2293.212175 
+M-step-1st-half time use (ms): 245.102882 
+M-step-2nd-half time use (ms): 0.499487 
+I/O time use (ms): 2.501011 
+ 
+=========================================
+=========================================
+testing with 2 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+=====Applying K-mean======
+=====writting data finished======
+Best inertia: 2308842.000000 
+Kmean total time use (ms): 1731.789112 
+E-step time use (ms): 1426.280260 
+M-step-1st-half time use (ms): 304.410219 
+M-step-2nd-half time use (ms): 0.734806 
+I/O time use (ms): 1.926899 
+ 
+=========================================
+=========================================
+testing with 4 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+=====Applying K-mean======
+=====writting data finished======
+Best inertia: 2308840.500000 
+Kmean total time use (ms): 1336.784840 
+E-step time use (ms): 934.716463 
+M-step-1st-half time use (ms): 399.653912 
+M-step-2nd-half time use (ms): 1.964569 
+I/O time use (ms): 2.602816 
+ 
+=========================================
+=========================================
+testing with 8 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+=====Applying K-mean======
+=====writting data finished======
+Best inertia: 2308833.500000 
+Kmean total time use (ms): 900.095940 
+E-step time use (ms): 490.777731 
+M-step-1st-half time use (ms): 407.839060 
+M-step-2nd-half time use (ms): 1.050949 
+I/O time use (ms): 2.654076 
+ 
+=========================================
+=========================================
+testing with 16 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+=====Applying K-mean======
+=====writting data finished======
+Best inertia: 2308838.000000 
+Kmean total time use (ms): 741.780996 
+E-step time use (ms): 309.553146 
+M-step-1st-half time use (ms): 430.645466 
+M-step-2nd-half time use (ms): 1.129389 
+I/O time use (ms): 2.640963 
+ 
+=========================================
+=========================================
+testing with 32 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+=====Applying K-mean======
+=====writting data finished======
+Best inertia: 2308832.750000 
+Kmean total time use (ms): 782.614946 
+E-step time use (ms): 210.109472 
+M-step-1st-half time use (ms): 570.574045 
+M-step-2nd-half time use (ms): 1.244783 
+I/O time use (ms): 2.243996 
+ 
+=========================================
+=========================================
+testing with 64 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+=====Applying K-mean======
+=====writting data finished======
+Best inertia: 2308833.750000 
+Kmean total time use (ms): 1440.789938 
+E-step time use (ms): 1023.807049 
+M-step-1st-half time use (ms): 415.407658 
+M-step-2nd-half time use (ms): 1.029730 
+I/O time use (ms): 2.650023 

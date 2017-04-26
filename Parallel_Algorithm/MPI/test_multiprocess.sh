@@ -1,6 +1,6 @@
 #!/bin/bash
 
-np_list='1 2 4 8'
+np_list='1 2 4 8 16 32 64'
 
 export OMP_NUM_THREADS=1 # make sure OpenMP disabled 
 for np in $np_list

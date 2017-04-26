@@ -1,0 +1,588 @@
+ 
+=========================================
+=========================================
+testing with 1 processes, 1 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 0: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308841.500000 
+I/O time use (ms): 4.006589 
+Kmean total time use (ms): 2363.860598 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 2112.615470 
+M-step-1st-half time use (ms): 250.408402 
+M-step-2nd-half time use (ms): 0.497923 
+ 
+=========================================
+=========================================
+testing with 1 processes, 2 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 0: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308842.000000 
+I/O time use (ms): 3.732907 
+Kmean total time use (ms): 1662.239609 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 1356.238149 
+M-step-1st-half time use (ms): 304.833094 
+M-step-2nd-half time use (ms): 0.622449 
+ 
+=========================================
+=========================================
+testing with 1 processes, 4 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 0: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308840.500000 
+I/O time use (ms): 3.693638 
+Kmean total time use (ms): 1189.350777 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 813.090273 
+M-step-1st-half time use (ms): 375.009360 
+M-step-2nd-half time use (ms): 0.758050 
+ 
+=========================================
+=========================================
+testing with 1 processes, 8 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 0: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308833.500000 
+I/O time use (ms): 3.934515 
+Kmean total time use (ms): 931.707351 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 500.118240 
+M-step-1st-half time use (ms): 429.142173 
+M-step-2nd-half time use (ms): 0.863691 
+ 
+=========================================
+=========================================
+testing with 2 processes, 1 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 1: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308842.000000 
+I/O time use (ms): 3.800784 
+Kmean total time use (ms): 1358.942563 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 1212.020400 
+M-step-1st-half time use (ms): 145.609492 
+M-step-2nd-half time use (ms): 0.594695 
+ 
+=========================================
+=========================================
+testing with 2 processes, 2 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 1: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308840.500000 
+I/O time use (ms): 3.766548 
+Kmean total time use (ms): 943.486173 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 760.652990 
+M-step-1st-half time use (ms): 181.228196 
+M-step-2nd-half time use (ms): 0.741900 
+ 
+=========================================
+=========================================
+testing with 2 processes, 4 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 1: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308833.500000 
+I/O time use (ms): 3.823837 
+Kmean total time use (ms): 680.486505 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 452.964565 
+M-step-1st-half time use (ms): 225.771176 
+M-step-2nd-half time use (ms): 0.831982 
+ 
+=========================================
+=========================================
+testing with 2 processes, 8 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 1: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308830.000000 
+I/O time use (ms): 3.852878 
+Kmean total time use (ms): 663.490676 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 353.790135 
+M-step-1st-half time use (ms): 307.547264 
+M-step-2nd-half time use (ms): 0.888228 
+ 
+=========================================
+=========================================
+testing with 4 processes, 1 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 3: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308840.750000 
+I/O time use (ms): 4.334087 
+Kmean total time use (ms): 909.529512 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 783.812606 
+M-step-1st-half time use (ms): 122.883010 
+M-step-2nd-half time use (ms): 0.911755 
+ 
+=========================================
+=========================================
+testing with 4 processes, 2 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 3: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308833.500000 
+I/O time use (ms): 4.096406 
+Kmean total time use (ms): 557.608783 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 445.375796 
+M-step-1st-half time use (ms): 109.179241 
+M-step-2nd-half time use (ms): 1.016673 
+ 
+=========================================
+=========================================
+testing with 4 processes, 4 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 3: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308830.000000 
+I/O time use (ms): 4.249204 
+Kmean total time use (ms): 382.619795 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 230.821690 
+M-step-1st-half time use (ms): 148.596137 
+M-step-2nd-half time use (ms): 1.035195 
+ 
+=========================================
+=========================================
+testing with 4 processes, 8 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 3: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308833.000000 
+I/O time use (ms): 4.232157 
+Kmean total time use (ms): 402.007910 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 210.121067 
+M-step-1st-half time use (ms): 187.990701 
+M-step-2nd-half time use (ms): 1.202342 
+ 
+=========================================
+=========================================
+testing with 8 processes, 1 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 7: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308833.500000 
+I/O time use (ms): 4.592522 
+Kmean total time use (ms): 505.915032 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 420.972104 
+M-step-1st-half time use (ms): 79.467921 
+M-step-2nd-half time use (ms): 1.211620 
+ 
+=========================================
+=========================================
+testing with 8 processes, 2 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 7: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308833.500000 
+I/O time use (ms): 4.143904 
+Kmean total time use (ms): 301.355469 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 227.431369 
+M-step-1st-half time use (ms): 68.241809 
+M-step-2nd-half time use (ms): 1.332544 
+ 
+=========================================
+=========================================
+testing with 8 processes, 4 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 7: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308833.000000 
+I/O time use (ms): 4.099906 
+Kmean total time use (ms): 311.526036 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 193.247065 
+M-step-1st-half time use (ms): 111.617091 
+M-step-2nd-half time use (ms): 1.467510 
+ 
+=========================================
+=========================================
+testing with 8 processes, 8 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 7: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308833.500000 
+I/O time use (ms): 4.120600 
+Kmean total time use (ms): 4898.684051 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 3469.320709 
+M-step-1st-half time use (ms): 1420.115374 
+M-step-2nd-half time use (ms): 1.485388 
+ 
+=========================================
+=========================================
+testing with 16 processes, 1 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 15: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308833.500000 
+I/O time use (ms): 7.041087 
+Kmean total time use (ms): 316.260453 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 251.028026 
+M-step-1st-half time use (ms): 54.075352 
+M-step-2nd-half time use (ms): 1.848250 
+ 
+=========================================
+=========================================
+testing with 16 processes, 2 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 15: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308833.000000 
+I/O time use (ms): 4.883557 
+Kmean total time use (ms): 313.827766 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 188.408545 
+M-step-1st-half time use (ms): 115.188138 
+M-step-2nd-half time use (ms): 1.672651 
+ 
+=========================================
+=========================================
+testing with 16 processes, 4 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 15: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308827.750000 
+I/O time use (ms): 5.108052 
+Kmean total time use (ms): 5194.099651 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 3129.300050 
+M-step-1st-half time use (ms): 2012.502378 
+M-step-2nd-half time use (ms): 1.927712 
+ 
+=========================================
+=========================================
+testing with 16 processes, 8 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 15: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308827.750000 
+I/O time use (ms): 6.952672 
+Kmean total time use (ms): 12382.280717 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 8528.571661 
+M-step-1st-half time use (ms): 3817.337787 
+M-step-2nd-half time use (ms): 1.997874 
+ 
+=========================================
+=========================================
+testing with 32 processes, 1 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 31: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308833.000000 
+I/O time use (ms): 6.334857 
+Kmean total time use (ms): 297.959041 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 176.053357 
+M-step-1st-half time use (ms): 97.873692 
+M-step-2nd-half time use (ms): 1.992122 
+ 
+=========================================
+=========================================
+testing with 32 processes, 2 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 31: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308827.750000 
+I/O time use (ms): 7.848291 
+Kmean total time use (ms): 4021.197152 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 2844.393182 
+M-step-1st-half time use (ms): 1116.176527 
+M-step-2nd-half time use (ms): 2.084090 
+ 
+=========================================
+=========================================
+testing with 32 processes, 4 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 31: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308828.000000 
+I/O time use (ms): 8.923698 
+Kmean total time use (ms): 13332.237565 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 8839.237808 
+M-step-1st-half time use (ms): 4086.888532 
+M-step-2nd-half time use (ms): 2.295686 
+ 
+=========================================
+=========================================
+testing with 32 processes, 8 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 31: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308827.500000 
+I/O time use (ms): 9.748165 
+Kmean total time use (ms): 33550.686761 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 21187.669129 
+M-step-1st-half time use (ms): 10737.786934 
+M-step-2nd-half time use (ms): 2.450273 
+ 
+=========================================
+=========================================
+testing with 64 processes, 1 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 63: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308827.750000 
+I/O time use (ms): 10.888008 
+Kmean total time use (ms): 783.003317 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 102.731732 
+M-step-1st-half time use (ms): 491.794025 
+M-step-2nd-half time use (ms): 2.122726 
+ 
+=========================================
+=========================================
+testing with 64 processes, 2 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 63: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308828.000000 
+I/O time use (ms): 16.582364 
+Kmean total time use (ms): 10385.388325 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 2861.456678 
+M-step-1st-half time use (ms): 5335.016671 
+M-step-2nd-half time use (ms): 2.135070 
+ 
+=========================================
+=========================================
+testing with 64 processes, 4 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 63: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308827.500000 
+I/O time use (ms): 19.903018 
+Kmean total time use (ms): 30551.306969 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 11010.092788 
+M-step-1st-half time use (ms): 13064.622681 
+M-step-2nd-half time use (ms): 2.318505 
+ 
+=========================================
+=========================================
+testing with 64 processes, 8 threads
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 63: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308827.500000 
+I/O time use (ms): 11.120870 
+Kmean total time use (ms): 69710.298024 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 24806.787879 
+M-step-1st-half time use (ms): 30334.412542 
+M-step-2nd-half time use (ms): 1.942891 

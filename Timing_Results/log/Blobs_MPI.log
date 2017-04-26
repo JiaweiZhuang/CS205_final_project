@@ -1,0 +1,147 @@
+ 
+=========================================
+=========================================
+testing with 1 processes
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 0: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308841.500000 
+I/O time use (ms): 3.746011 
+Kmean total time use (ms): 2327.527416 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 2080.869320 
+M-step-1st-half time use (ms): 245.803846 
+M-step-2nd-half time use (ms): 0.497344 
+ 
+=========================================
+=========================================
+testing with 2 processes
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 1: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308842.000000 
+I/O time use (ms): 3.857213 
+Kmean total time use (ms): 1370.546596 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 1208.027011 
+M-step-1st-half time use (ms): 161.206449 
+M-step-2nd-half time use (ms): 0.596461 
+ 
+=========================================
+=========================================
+testing with 4 processes
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 3: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308840.750000 
+I/O time use (ms): 4.113028 
+Kmean total time use (ms): 889.274717 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 783.437196 
+M-step-1st-half time use (ms): 103.108949 
+M-step-2nd-half time use (ms): 0.884013 
+ 
+=========================================
+=========================================
+testing with 8 processes
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 7: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308833.500000 
+I/O time use (ms): 4.099924 
+Kmean total time use (ms): 490.620752 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 421.552152 
+M-step-1st-half time use (ms): 63.779867 
+M-step-2nd-half time use (ms): 1.227340 
+ 
+=========================================
+=========================================
+testing with 16 processes
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 15: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308833.500000 
+I/O time use (ms): 4.935520 
+Kmean total time use (ms): 298.665461 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 221.786738 
+M-step-1st-half time use (ms): 67.226194 
+M-step-2nd-half time use (ms): 1.788349 
+ 
+=========================================
+=========================================
+testing with 32 processes
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 31: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308833.000000 
+I/O time use (ms): 9.008225 
+Kmean total time use (ms): 280.026070 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 183.410053 
+M-step-1st-half time use (ms): 76.902479 
+M-step-2nd-half time use (ms): 1.928765 
+ 
+=========================================
+=========================================
+testing with 64 processes
+reading data 
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+=====reading data finished======
+Last element in global array: -5.464932 
+Last element after scattering 63: -5.464932 
+=====Applying K-mean======
+Best inertia: 2308827.750000 
+I/O time use (ms): 19.194771 
+Kmean total time use (ms): 985.778767 
+
+(sub-component timing not accurate) 
+E-step time use (ms): 106.266378 
+M-step-1st-half time use (ms): 605.020996 
+M-step-2nd-half time use (ms): 2.200050 
