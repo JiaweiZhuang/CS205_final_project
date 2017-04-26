@@ -80,6 +80,8 @@ In Python, the [xarray package](http://xarray.pydata.org/en/stable/) is a good w
 
 In C, we've provided a [script](Build_Library/netCDF_build/install_netCDF.sh) to install that library. A single build can work for various compilers including the basic gcc compiler, the pgcc compiler for OpenACC, and the nvcc compiler for CUDA.
 
+It is also worth mentioning that, NetCDF is the standard data format used for the Intergovernmental Panel on Climate Change (IPCC) report :)
+
 # Applications
 
 # Advanced Features
