@@ -1,6 +1,7 @@
 # Table of Contents
   * [Introduction](#introduction)
   * [Parallel Kmeans Algorithms](#parallel-kmeans-algorithms)
+  * [Computational Platforms and Software Libraries](#computational-platforms-and-software-libraries)
   * [Applications](#applications)
   * [Advanced Features](#advanced-features)
   
@@ -16,9 +17,9 @@ to significantly speed up the computing time of the clustering process, without 
 
 # Parallel Kmeans Algorithms
 
-## OpenMP, MPI and hybrid MPI-OpenMP parallelization
-
 A typical approach for k-mean clustering is Expectation–Maximization (E–M). E-step assigns points to the nearest cluster center, while M-step set the cluster centers to the mean. 
+
+## OpenMP, MPI and hybrid MPI-OpenMP parallelization
 
 ### OpenMP
 
@@ -55,6 +56,23 @@ We simply add OpenMP pragmas to the MPI code, to get the hybrid version. This ti
 
 Interestingly, for N_MPI*n_omp=32, we have tested 4 cases (N_MPI,n_omp) = (32,1), (16,2), (8,4) or (4,8), and all of them have almost the same speed. 
 [(see the exact time use in the last cell)](https://github.com/JiaweiZhuang/CS205_final_project/blob/master/Timing_Results/plot_timing.ipynb)
+
+
+# Computational Platforms and Software Libraries
+
+## Amazon EC2 cloud computing environment
+
+Although MPI programs typically run on local HPC facilities like Harvard's Odyssey, we found that MPI jobs at small-to-medium-scales (e.g. < 64 cores) can also run very efficiently on cloud platforms like Amazon EC2. This gives us great flexibility in requesting computational resources, so that we can finish simulations very quickly without worrying about job pending on Odyssey.
+
+The instance we use for the timing tests is cc2.8xlarge [(see detailed cpuinfo)](Timing_Results/info/cpu). In the Amazon console, it is said to have 64 "virtual" CPUs. However, it actually only contains 32 physical CPUs as shown by the "lscpu" command.
+
+We have installed various software libraries to facilitate our K-mean application. An AMI is made public in the so that others can also run our codes directly without installing those libraries on their own. Search for "ami-3f79ef29" or  "GCC_NetCDF_MPI_Conda_04162017" in the N. Virginia region.
+
+## The OpenMPI library
+
+
+## The NetCDF4 library for data I/O
+
 
 
 # Applications
