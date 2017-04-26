@@ -17,6 +17,10 @@ to significantly speed up the computing time of the clustering process, without 
 # Paralleled Kmeans Algorithms
 We choose MPI + OpenMP/OpenACC/CUDA as our heterogenous computing environment. 
 
+![Scaling test with pure OpenMP](Timing_Results/plots/OpenMP_scaling.jpg)
+![Scaling test with pure MPI](Timing_Results/plots/MPI_scaling.jpg)
+![Scaling test with hybrid MPI-OpenMP](Timing_Results/plots/hybrid_scaling.jpg)
+
 # Applications
 
 # Advanced Features
