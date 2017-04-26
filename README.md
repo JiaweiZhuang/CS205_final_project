@@ -33,6 +33,8 @@ Unsurprisingly, while the E-step scales well, the M-step even gets slower becaus
 
 [(View the raw timing log)](Timing_Results/log/Blobs_OpenMP.log)
 
+Because the compute node we are testing has only [32 CPUs](#computational-platforms-and-software-libraries), the performance gets lower with 64 threads due to the implicit context-switching and increased overheads. Same for the MPI and the hybrid tests below.
+
 ### MPI
 
 With MPI, we can distribute data points to different processes using MPI_Bcast, and use MPI_Allreduce to exchange information whenever needed. Thus, both the E-step and the M-step can be parallelized. [(View our MPI code)](Parallel_Algorithm/MPI/Kmean_mpi.c)
