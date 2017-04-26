@@ -45,11 +45,13 @@ This time, we get speed-up in both steps, so the overall scaling is better than 
 
 ### Hybrid MPI-OpenMP
 
-We simply add OpenMP pragmas to the MPI code, to get the hybrid version. This time we have many combinations of OpenMP threads and MPI processes to test. In general, we find that the speed-up depends on the product of OpenMP threads and MPI processes:
+We simply add OpenMP pragmas to the MPI code, to get the hybrid version. This time we have many combinations of OpenMP threads and MPI processes to test. In general, we find that the speed-up depends on the product of the number of OpenMP threads (n_omp hereinafter) and the number of MPI processes (N_MPI hereinafter):
 
 <p align="center">
 <img src="Timing_Results/plots/hybrid_scaling.jpg" width="480">
 </p>
+
+Interestingly, for N_MPI*n_omp=32, we have tested 4 cases (N_MPI,n_omp) = (32,1), (16,2), (8,4) or (4,8), and all of them have almost the same speed.
 
 [(View the raw timing log)](Timing_Results/log/Blobs_hybrid.log)
 
