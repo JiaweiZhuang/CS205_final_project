@@ -25,7 +25,7 @@ A typical approach for k-mean clustering is Expectation–Maximization (E–M). 
 With OpenMP parallelization, only E-step can be directly parallelized. If M-step is directly parallelized with OpenMP pragmas, different data points might be added to one cluster at the same time, leading to Write-After-Arite (WAW) harzard. Although it is possible to make drastic modifications to parallelize the M-step, it contradicts the basic idea of OpenMP that the serial code shoud be almost untouched. Therefore, we only focus on the E-step. 
 [(View our OpenMP code)](Parallel_Algorithm/OpenMP/Kmean_omp.c)
 
-Unsurprisingly, although the E-step scales well, the M-step even gets slower because of thread overheads and finally becomes a bottleneck:
+Unsurprisingly, while the E-step scales well, the M-step even gets slower because of thread overheads. Although the M-step is not time-consuming in the serial case, it finally becomes the bottleneck when the number of cores gets large:
 <p align="center">
 <img src="Timing_Results/plots/OpenMP_scaling.jpg" width="720">
 </p>
