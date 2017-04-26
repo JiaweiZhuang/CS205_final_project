@@ -1,6 +1,6 @@
 nt = 365*49-7;
 levels = 18;
-fileID = fopen('./SSWdata.bin');
+fileID = fopen('data/SSWdata.bin');
 X=fread(fileID,[nt*levels*14 1],'double');
 X=reshape(swapbytes(X),[levels*14 nt]);
 size(X)
