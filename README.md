@@ -51,9 +51,9 @@ We simply add OpenMP pragmas to the MPI code, to get the hybrid version. This ti
 <img src="Timing_Results/plots/hybrid_scaling.jpg" width="480">
 </p>
 
-Interestingly, for N_MPI*n_omp=32, we have tested 4 cases (N_MPI,n_omp) = (32,1), (16,2), (8,4) or (4,8), and all of them have almost the same speed.
-
 [(View the raw timing log)](Timing_Results/log/Blobs_hybrid.log)
+
+Interestingly, for N_MPI*n_omp=32, we have tested 4 cases (N_MPI,n_omp) = (32,1), (16,2), (8,4) or (4,8), and all of them have almost the same speed. [(see the exact time use in the last cell)](Timing_Results/plot_timing.ipynb)
 
 
 # Applications
