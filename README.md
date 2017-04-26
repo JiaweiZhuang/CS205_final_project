@@ -29,6 +29,7 @@ Unsurprisingly, while the E-step scales well, the M-step even gets slower becaus
 <p align="center">
 <img src="Timing_Results/plots/OpenMP_scaling.jpg" width="720">
 </p>
+
 [(View the raw timing log)](Timing_Results/log/Blobs_OpenMP.log)
 
 ### MPI
