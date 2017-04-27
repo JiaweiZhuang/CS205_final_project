@@ -15,8 +15,6 @@ d>1 and the number of clusters k>1. Scientists came up with several heuristic me
 computationally-intensive, especially with huge data sets. We want to implement a parallel version of a k-means heuristic method on a cluster of machines, 
 to significantly speed up the computing time of the clustering process, without any reduction on the accuracy rate of the clustering model.
 
-# Parallel Kmeans Algorithms
-
 A typical approach for k-mean clustering is Expectation–Maximization (E–M). E-step assigns points to the nearest cluster center, while M-step sets the cluster centers to the mean. 
 
 Below is an animation demonstating the Kmean algorithm, based on a wonderful [K-means visualization made by Naftali Harris ](https://www.naftaliharris.com/blog/visualizing-k-means-clustering/).
@@ -24,6 +22,8 @@ Below is an animation demonstating the Kmean algorithm, based on a wonderful [K-
 <p align="center">
 <img src="Other_Image/Kmean_illustration/Kmeans.gif" width="640">
 </p>
+
+# Parallel Kmeans Algorithms
 
 ## OpenMP, MPI and hybrid MPI-OpenMP parallelization
 
