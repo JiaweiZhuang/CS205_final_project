@@ -116,24 +116,29 @@ Because a sample includs different types of features, we need to carefully choos
 
 <p align="center">
 <img src="Data_Analysis/figures/svalue.png" width="480">
-
+</p>
+<p align="center">
 Figure 1: Silhouette score
 </p>
 
 <p align="center">
 <img src="Data_Analysis/figures/T.png" width="480">
-
-Figure 2: Averaged temperature anomaly for each cluster
 </p>
 <p align="center">
-<img src="Data_Analysis/figures/PV.png" width="480">
+Figure 2: Averaged temperature anomaly for each cluster
+</p>
 
+<p align="center">
+<img src="Data_Analysis/figures/PV.png" width="480">
+</p>
+<p align="center">
 Figure 3: Averaged potential vorticity for each cluster
 </p>
 
 <p align="center">
 <img src="Data_Analysis/figures/SSWsubset.png" width="480">
-
+</p>
+<p align="center">
 Figure 4: Averaged potential vorticity for each sub-cluster
 </p>
 
