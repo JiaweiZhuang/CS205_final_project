@@ -127,4 +127,4 @@ In C, we've provided a [script](Build_Library/netCDF_build/install_netCDF.sh) to
 It is also worth mentioning that, NetCDF is the standard data format used for the Intergovernmental Panel on Climate Change (IPCC) report :)
 
 # References
-
+Coughlin, K., and Lesley Janet Gray. "A continuum of sudden stratospheric warmings." *Journal of the Atmospheric Sciences* 66.2 (2009): 531-540.
