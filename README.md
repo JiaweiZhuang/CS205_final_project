@@ -2,6 +2,7 @@
   * [Introduction](#introduction)
   * [Parallel Kmeans Algorithms](#parallel-kmeans-algorithms)
       * [OpenMP, MPI and hybrid MPI-OpenMP parallelization](#openMP,-mpi-and-hybrid-mpi-openmp-parallelization)
+      * [GPU: Cuda](#cuda)
   * [Applications](#applications)
   * [Computational Platforms and Software Libraries](#computational-platforms-and-software-libraries)
   
@@ -64,6 +65,8 @@ We simply add OpenMP pragmas to the MPI code, to get the hybrid version. This ti
 
 Interestingly, for N_MPI*n_omp=32, we have tested 4 cases (N_MPI,n_omp) = (32,1), (16,2), (8,4) or (4,8), and all of them have almost the same speed. 
 [(see the exact time use in the last cell)](https://github.com/JiaweiZhuang/CS205_final_project/blob/master/Timing_Results/plot_timing.ipynb)
+
+## CUDA
 
 # Applications
 
