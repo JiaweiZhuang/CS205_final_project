@@ -117,6 +117,8 @@ Because a sample includs different types of features, we need to carefully choos
 <p align="center">
 <img src="Data_Analysis/figures/svalue.png" width="480">
 </p>
+<center>** Figure 1: Silhoutte Score **</center>
+
 <p align="center">
 <img src="Data_Analysis/figures/T.png" width="480">
 </p>
