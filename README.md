@@ -85,9 +85,8 @@ K-means clustering serves as a powerful technique in dealing with those caveats.
 ---
 >The abnormal climate events we would like to explore is called sudden stratospheric warmings (SSW). During Northern hemisphere winter, because of the very cold temperature at the pole, the climatological zonal winds in the stratosphere are generally westerly and their strength increases with height. These winds can form very persistent "polar night jet” vortex, as shown in Fig(a). However, at times this zonal-mean configuration can be dramatically disturbed, as shown in Fig(b) and Fig(c), with the vortex being displaced or split. At the same time, the stratosphere near the pole experiences sudden warming, with latitudinal temperature gradient and zonal-mean winds at the pole being reversed.
 <p align="center">
-<img src="Data_Analysis/figures/intro.png" width="480">
+<img src="Data_Analysis/figures/intro1.png" width="480">
 </p>
-
 
 ---
 
