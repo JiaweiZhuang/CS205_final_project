@@ -2,8 +2,10 @@
   * [Introduction](#introduction)
   * [Parallel Kmeans Algorithms](#parallel-kmeans-algorithms)
       * [OpenMP, MPI and hybrid MPI-OpenMP parallelization](#openmp-mpi-and-hybrid-mpi-openmp-parallelization)
-      * [GPU: Cuda](#cuda)
+      * [Advanced Feature: Cuda](#advanced-features-cuda)
   * [Applications](#applications)
+      * [Forest Cover Type Classification](#forest-cover-type-classification)
+      * [Advanced Feature: Detecting abnormal meteorology events](#advanced-feature-detecting-abnormal-meteorology-events)
   * [Computational Platforms and Software Libraries](#computational-platforms-and-software-libraries)
   
 # Introduction
@@ -66,12 +68,12 @@ We simply add OpenMP pragmas to the MPI code, to get the hybrid version. This ti
 Interestingly, for N_MPI*n_omp=32, we have tested 4 cases (N_MPI,n_omp) = (32,1), (16,2), (8,4) or (4,8), and all of them have almost the same speed. 
 [(see the exact time use in the last cell)](https://github.com/JiaweiZhuang/CS205_final_project/blob/master/Timing_Results/plot_timing.ipynb)
 
-## CUDA
+## Advanced Feature: CUDA
 
 # Applications
+## Forest Cover Type Classification
 
-## Advanced Features
-### Detecting abnormal meteorology events
+## Advanced Feature: Detecting abnormal meteorology events
 In this part, we would like to use k-means cluster technique to examine a type of climate events, called sudden stratospheric warmings (SSWs). The climatological zonal winds in the stratosphere are generally westerly and their strength increases with height. These winds form the \"polar night jet\" vortex, and can be very persistent during winters, as shown in fig(a). However, at times this zonal-mean configuration is dramatically disturbed, as shown in fig(b) and fig(c), with latitudinal temperature gradient and zonal-mean winds at the pole being reversed.
 
 In the past, these pheonomena have been arbitrarily defined using a variety of different criteria involving winds, temperatures, and measures of the vortex shape. Using thresholds can be a powerful and useful way to understand variability, but more or less a subjective way in terms of choosing the thresholds. k-means clustering is a method of identifying different states in a completely objective manner with no preconceived notion of the groups and no preselection on the basis of known influencing factors.
