@@ -87,7 +87,9 @@ K-means clustering serves as a powerful technique in dealing with those caveats.
 <p align="center">
 <img src="Data_Analysis/figures/intro.png" width="480">
 </p>
+
 ---
+
 
 <p align="center">
 <img src="Data_Analysis/figures/svalue.png" width="480">
