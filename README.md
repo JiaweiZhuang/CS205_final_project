@@ -1,8 +1,8 @@
 # Table of Contents
   * [Introduction](#introduction)
   * [Parallel Kmeans Algorithms](#parallel-kmeans-algorithms)
-  * [Computational Platforms and Software Libraries](#computational-platforms-and-software-libraries)
   * [Applications](#applications)
+  * [Computational Platforms and Software Libraries](#computational-platforms-and-software-libraries)
   
 # Introduction
 Many huge data sets are now publicly available. There are several ways to turn those large amounts of data into useful knowledge. 
@@ -64,6 +64,26 @@ We simply add OpenMP pragmas to the MPI code, to get the hybrid version. This ti
 Interestingly, for N_MPI*n_omp=32, we have tested 4 cases (N_MPI,n_omp) = (32,1), (16,2), (8,4) or (4,8), and all of them have almost the same speed. 
 [(see the exact time use in the last cell)](https://github.com/JiaweiZhuang/CS205_final_project/blob/master/Timing_Results/plot_timing.ipynb)
 
+# Applications
+
+## Advanced Features
+### Detecting abnormal meteorology events
+In this part, we would like to use k-means cluster technique to examine a type of climate events, called sudden stratospheric warmings (SSWs). The climatological zonal winds in the stratosphere are generally westerly and their strength increases with height. These winds form the \"polar night jet\" vortex, and can be very persistent during winters, as shown in fig(a). However, at times this zonal-mean configuration is dramatically disturbed, as shown in fig(b) and fig(c), with latitudinal temperature gradient and zonal-mean winds at the pole being reversed.
+
+In the past, these pheonomena have been arbitrarily defined using a variety of different criteria involving winds, temperatures, and measures of the vortex shape. Using thresholds can be a powerful and useful way to understand variability, but more or less a subjective way in terms of choosing the thresholds. k-means clustering is a method of identifying different states in a completely objective manner with no preconceived notion of the groups and no preselection on the basis of known influencing factors.
+
+k-means clustering technique is more useful than hierarchical clustering for this type of problems, because k-means clustering easily allows for uneven groups, whereas hierachical clusetering tends to determine groups of similar sizes. 
+
+In addition, this type of problems usually involves a very large dataset with very high dimensions, e.g. more than 17,000 data points with 252 dimensions in this example, therefore a simple clustering technique such as k-means is very useful.
+<p align="center">
+<img src="Data_Analysis/figures/svalue.png" width="480">
+</p>
+<p align="center">
+<img src="Data_Analysis/figures/T.png" width="480">
+</p>
+<p align="center">
+<img src="Data_Analysis/figures/PV.png" width="480">
+</p>
 
 # Computational Platforms and Software Libraries
 
@@ -88,27 +108,5 @@ In Python, the [xarray package](http://xarray.pydata.org/en/stable/) is a good w
 In C, we've provided a [script](Build_Library/netCDF_build/install_netCDF.sh) to install that library. A single build can work for various compilers including the basic gcc compiler, the pgcc compiler for OpenACC, and the nvcc compiler for CUDA. With the NetCDF-C library, we can read all the data we need and dynamically allocate memories for them in a single function [readX()](Parallel_Algorithm/shared/ncdf_util.c)
 
 It is also worth mentioning that, NetCDF is the standard data format used for the Intergovernmental Panel on Climate Change (IPCC) report :)
-
-# Applications
-
-## Advanced Features
-### Detecting abnormal meteorology events
-In this part, we would like to use k-means cluster technique to examine a type of climate events, called sudden stratospheric warmings (SSWs). The climatological zonal winds in the stratosphere are generally westerly and their strength increases with height. These winds form the \"polar night jet\" vortex, and can be very persistent during winters, as shown in fig(a). However, at times this zonal-mean configuration is dramatically disturbed, as shown in fig(b) and fig(c), with latitudinal temperature gradient and zonal-mean winds at the pole being reversed.
-
-In the past, these pheonomena have been arbitrarily defined using a variety of different criteria involving winds, temperatures, and measures of the vortex shape. Using thresholds can be a powerful and useful way to understand variability, but more or less a subjective way in terms of choosing the thresholds. k-means clustering is a method of identifying different states in a completely objective manner with no preconceived notion of the groups and no preselection on the basis of known influencing factors.
-
-k-means clustering technique is more useful than hierarchical clustering for this type of problems, because k-means clustering easily allows for uneven groups, whereas hierachical clusetering tends to determine groups of similar sizes. 
-
-In addition, this type of problems usually involves a very large dataset with very high dimensions, e.g. more than 17,000 data points with 252 dimensions in this example, therefore a simple clustering technique such as k-means is very useful.
-<p align="center">
-<img src="Data_Analysis/figures/svalue.png" width="480">
-</p>
-<p align="center">
-<img src="Data_Analysis/figures/T.png" width="480">
-</p>
-<p align="center">
-<img src="Data_Analysis/figures/PV.png" width="480">
-</p>
-
 
 
