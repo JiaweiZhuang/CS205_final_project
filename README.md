@@ -107,6 +107,12 @@ The abnormal climate events we would like to explore is called sudden stratosphe
 
 ---
 
+### Data and Measure of Distance
+Our analysis is based on the daily output from a 49-year all-winter simulation, which gives us more than 17,000 samples. Daily data is pre-processed to get averaged temperatures at three latitudes, and their tendencies over time, latitudinal temperature gradient, and its tendency, averaged zonal winds at two latitudes, and their tendencies, and wave-number one and two components of geo-potential height. Temperatures are averaged over 60&deg;N to 70&deg;N, 70&deg;N to 80&deg;N, and 80&deg;N to 90&deg;N, while zonal winds are averaged over 60&deg;N to 70&deg;N and 70&deg;N to 80&deg;N. Tendencies are calculated as the differences between its current value and its value 7 days before. Altogether, there are 252 features for a sample, including 14 features each vertical level, and 18 levels in total across the stratosphere. 
+
+Because a sample includs different types of features, we need to carefully choose the measure of distance. Here, we choose 1-corr(x1,x2) as the measure of distance, because we consider two patterns to be close to each other if they are highly correlated. 
+
+### Results
 
 <p align="center">
 <img src="Data_Analysis/figures/svalue.png" width="480">
