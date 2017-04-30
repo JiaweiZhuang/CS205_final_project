@@ -113,7 +113,7 @@ Our analysis is based on the daily output from a 49-year all-winter simulation, 
 Because a sample includs different types of features, we need to carefully choose the measure of distance. Here, we choose 1-corr(x1,x2) as the measure of distance, because we consider two patterns to be close to each other if they are highly correlated. 
 
 ### Results
-
+We have tested the number of clusters from 2 to 4, and use Silhouette score to evaluate the result of clustering. Two clusters give the highest averaged score of 0.65, as shown in Fig 1, while the score for three clusters is , and four clusters is . Therefore, we think two clusters are separated well by k-means clustering. 
 <p align="center">
 <img src="Data_Analysis/figures/svalue.png" width="480">
 </p>
@@ -121,6 +121,7 @@ Because a sample includs different types of features, we need to carefully choos
 Figure 1: Silhouette score
 </p>
 
+Fig 2 shows the temperature anomaly over the stratosphere for both clusters. The second cluster shows a substantial warming (more than 10K) than the first cluster. 
 <p align="center">
 <img src="Data_Analysis/figures/T.png" width="480">
 </p>
