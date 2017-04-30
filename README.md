@@ -1,7 +1,6 @@
 # Table of Contents
   * [Introduction](#introduction)
   * [Parallel Kmeans Algorithms](#parallel-kmeans-algorithms)
-  +  [Parallel Kmeans Algorithms](#parallel-kmeans-algorithms)
   * [Applications](#applications)
   * [Computational Platforms and Software Libraries](#computational-platforms-and-software-libraries)
   
