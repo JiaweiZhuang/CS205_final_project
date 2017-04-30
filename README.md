@@ -1,7 +1,7 @@
 # Table of Contents
   * [Introduction](#introduction)
   * [Parallel Kmeans Algorithms](#parallel-kmeans-algorithms)
-      * [OpenMP, MPI and hybrid MPI-OpenMP parallelization](#openMP,-mpi-and-hybrid-mpi-openmp-parallelization)
+      * [OpenMP, MPI and hybrid MPI-OpenMP parallelization](#openmp,-mpi-and-hybrid-mpi-openmp-parallelization)
       * [GPU: Cuda](#cuda)
   * [Applications](#applications)
   * [Computational Platforms and Software Libraries](#computational-platforms-and-software-libraries)
