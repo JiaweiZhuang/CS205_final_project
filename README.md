@@ -7,7 +7,7 @@
       * [Forest Cover Type Classification](#forest-cover-type-classification)
       * [Advanced Feature: Detecting abnormal meteorology events](#advanced-feature-detecting-abnormal-meteorology-events)
   * [Computational Platforms and Software Libraries](#computational-platforms-and-software-libraries)
-
+  * [References](#references)
 ---  
 # Introduction
 Many huge data sets are now publicly available. There are several ways to turn those large amounts of data into useful knowledge. 
@@ -119,4 +119,5 @@ In C, we've provided a [script](Build_Library/netCDF_build/install_netCDF.sh) to
 
 It is also worth mentioning that, NetCDF is the standard data format used for the Intergovernmental Panel on Climate Change (IPCC) report :)
 
+# References
 
