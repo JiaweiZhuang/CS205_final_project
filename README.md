@@ -1,10 +1,15 @@
 # Table of Contents
   * [Introduction](#introduction)
   * [Parallel Kmeans Algorithms](#parallel-kmeans-algorithms)
-  * [Computational Platforms and Software Libraries](#computational-platforms-and-software-libraries)
+      * [OpenMP, MPI and hybrid MPI-OpenMP parallelization](#openmp-mpi-and-hybrid-mpi-openmp-parallelization)
+      * [Advanced Feature: Cuda](#advanced-features-cuda)
   * [Applications](#applications)
-  * [Advanced Features](#advanced-features)
+      * [Forest Cover Type Classification](#forest-cover-type-classification)
+      * [Advanced Feature: Detecting abnormal meteorology events](#advanced-feature-detecting-abnormal-meteorology-events)
+  * [Computational Platforms and Software Libraries](#computational-platforms-and-software-libraries)
+  * [References](#references)
   
+---  
 # Introduction
 Many huge data sets are now publicly available. There are several ways to turn those large amounts of data into useful knowledge. 
 Here we focus on exploratory data analysis, or unsupervised machine learning, which means finding structural information without prior knowledge.
@@ -15,8 +20,6 @@ d>1 and the number of clusters k>1. Scientists came up with several heuristic me
 computationally-intensive, especially with huge data sets. We want to implement a parallel version of a k-means heuristic method on a cluster of machines, 
 to significantly speed up the computing time of the clustering process, without any reduction on the accuracy rate of the clustering model.
 
-# Parallel Kmeans Algorithms
-
 A typical approach for k-mean clustering is Expectation–Maximization (E–M). E-step assigns points to the nearest cluster center, while M-step sets the cluster centers to the mean. 
 
 Below is an animation demonstating the Kmean algorithm, based on a wonderful [K-means visualization made by Naftali Harris ](https://www.naftaliharris.com/blog/visualizing-k-means-clustering/).
@@ -24,6 +27,9 @@ Below is an animation demonstating the Kmean algorithm, based on a wonderful [K-
 <p align="center">
 <img src="Other_Image/Kmean_illustration/Kmeans.gif" width="640">
 </p>
+
+---
+# Parallel Kmeans Algorithms
 
 ## OpenMP, MPI and hybrid MPI-OpenMP parallelization
 
@@ -65,7 +71,31 @@ We simply add OpenMP pragmas to the MPI code, to get the hybrid version. This ti
 Interestingly, for N_MPI*n_omp=32, we have tested 4 cases (N_MPI,n_omp) = (32,1), (16,2), (8,4) or (4,8), and all of them have almost the same speed. 
 [(see the exact time use in the last cell)](https://github.com/JiaweiZhuang/CS205_final_project/blob/master/Timing_Results/plot_timing.ipynb)
 
+## Advanced Feature: CUDA
 
+---
+# Applications
+## Forest Cover Type Classification
+
+## Advanced Feature: Detecting abnormal meteorology events
+In this part, we would like to use k-means cluster technique to examine a type of climate events, called sudden stratospheric warmings (SSWs). The climatological zonal winds in the stratosphere are generally westerly and their strength increases with height. These winds form the \"polar night jet\" vortex, and can be very persistent during winters, as shown in fig(a). However, at times this zonal-mean configuration is dramatically disturbed, as shown in fig(b) and fig(c), with latitudinal temperature gradient and zonal-mean winds at the pole being reversed.
+
+In the past, these pheonomena have been arbitrarily defined using a variety of different criteria involving winds, temperatures, and measures of the vortex shape. Using thresholds can be a powerful and useful way to understand variability, but more or less a subjective way in terms of choosing the thresholds. k-means clustering is a method of identifying different states in a completely objective manner with no preconceived notion of the groups and no preselection on the basis of known influencing factors.
+
+k-means clustering technique is more useful than hierarchical clustering for this type of problems, because k-means clustering easily allows for uneven groups, whereas hierachical clusetering tends to determine groups of similar sizes. 
+
+In addition, this type of problems usually involves a very large dataset with very high dimensions, e.g. more than 17,000 data points with 252 dimensions in this example, therefore a simple clustering technique such as k-means is very useful.
+<p align="center">
+<img src="Data_Analysis/figures/svalue.png" width="480">
+</p>
+<p align="center">
+<img src="Data_Analysis/figures/T.png" width="480">
+</p>
+<p align="center">
+<img src="Data_Analysis/figures/PV.png" width="480">
+</p>
+
+---
 # Computational Platforms and Software Libraries
 
 ## Amazon EC2 cloud computing environment
@@ -90,19 +120,5 @@ In C, we've provided a [script](Build_Library/netCDF_build/install_netCDF.sh) to
 
 It is also worth mentioning that, NetCDF is the standard data format used for the Intergovernmental Panel on Climate Change (IPCC) report :)
 
-# Applications
-
-# Advanced Features
-## Detecting abnormal meteorology events
-In this part, we would like to use k-means cluster technique to examine a type of climate events, called sudden stratospheric warmings (SSWs). The climatological zonal winds in the stratosphere are generally westerly and their strength increases with height. These winds form the \"polar night jet\" vortex, and can be very persistent during winters, as shown in fig(a). However, at times this zonal-mean configuration is dramatically disturbed, as shown in fig(b) and fig(c), with latitudinal temperature gradient and zonal-mean winds at the pole being reversed.
-
-In the past, these pheonomena have been arbitrarily defined using a variety of different criteria involving winds, temperatures, and measures of the vortex shape. Using thresholds can be a powerful and useful way to understand variability, but more or less a subjective way in terms of choosing the thresholds. k-means clustering is a method of identifying different states in a completely objective manner with no preconceived notion of the groups and no preselection on the basis of known influencing factors.
-
-k-means clustering technique is more useful than hierarchical clustering for this type of problems, because k-means clustering easily allows for uneven groups, whereas hierachical clusetering tends to determine groups of similar sizes. 
-
-In addition, this type of problems usually involves a very large dataset with very high dimensions, e.g. more than 17,000 data points with 252 dimensions in this example, therefore a simple clustering technique such as k-means is very useful.
-![Silhouette Value](Data_Analysis/figures/svalue.png)
-![Temperature Anomaly](Data_Analysis/figures/T.png)
-![Vortex Structure](Data_Analysis/figures/PV.png)
-
+# References
 

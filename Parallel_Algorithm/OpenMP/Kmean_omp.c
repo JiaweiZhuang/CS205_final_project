@@ -7,7 +7,8 @@
 #include "../shared/math_util.h"
 
 /* This is the name of the data file we will read. */
-#define FILE_NAME "../test_data/Blobs_smp20000_fea30_cls8.nc"
+//#define FILE_NAME "../test_data/Blobs_smp20000_fea30_cls8.nc"
+#define FILE_NAME "../../Data_Analysis/data/SSWdata.nc"
 #define TOL 0.0001 
 #define MAX_ITER 100 
 
@@ -93,9 +94,11 @@ int main() {
     #pragma omp for schedule(static)
     for (i = 0; i < N_samples; i++) {
         k_best = 0;//assume cluster no.0 is the nearest
-        dist_min = distance(N_features, X[i], old_cluster_centers[k_best]); 
+        //dist_min = distance(N_features, X[i], old_cluster_centers[k_best]); 
+        dist_min = correlation(N_features, X[i], old_cluster_centers[k_best]); 
         for (k = 1; k < N_clusters; k++){
-            dist = distance(N_features, X[i], old_cluster_centers[k]); 
+            //dist = distance(N_features, X[i], old_cluster_centers[k]); 
+            dist = correlation(N_features, X[i], old_cluster_centers[k]); 
             if (dist < dist_min){
                 dist_min = dist;
                 k_best = k; 
