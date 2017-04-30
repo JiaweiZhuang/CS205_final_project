@@ -82,6 +82,13 @@ In this section, we will explore the application of k-means clustering technique
 
 K-means clustering serves as a powerful technique in dealing with those caveats. First, instead of using a highly simplified index, a high dimension feature vector characterizing the event from multiple dynamical aspects can be utilized. In addition, k-means clustering is highly scalable to cluster huge datasets, such as those from simulations. Second, k-means clustering is able to identify different states in a completely objective manner with no preconceived notion of the groups and no preselection on the basis of known influencing factors (Coughlin and Gray, 2009). Third, k-means clustering technique is especially useful for detecting abnormal events, because k-means clustering easily allows for uneven groups, whereas some other techniques, such as hierachical clustering, tend to determine groups of similar sizes.
 
+```
+The abnormal climate events we would like to explore is called sudden stratospheric warmings (SSW). During Northern hemisphere winter, because of the very cold temperature at the pole, the climatological zonal winds in the stratosphere are generally westerly and their strength increases with height. These winds can form very persistent "polar night jet” vortex, as shown in Fig(a). However, at times this zonal-mean configuration can be dramatically disturbed, as shown in Fig(b) and Fig(c), with the vortex being displaced or split. At the same time, the stratosphere near the pole experiences sudden warming, with latitudinal temperature gradient and zonal-mean winds at the pole being reversed.
+<p align="center">
+<img src="Data_Analysis/figures/svalue.png" width="480">
+</p>
+```
+
 <p align="center">
 <img src="Data_Analysis/figures/svalue.png" width="480">
 </p>
