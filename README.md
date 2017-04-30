@@ -7,7 +7,8 @@
       * [Forest Cover Type Classification](#forest-cover-type-classification)
       * [Advanced Feature: Detecting abnormal meteorology events](#advanced-feature-detecting-abnormal-meteorology-events)
   * [Computational Platforms and Software Libraries](#computational-platforms-and-software-libraries)
-  
+
+---  
 # Introduction
 Many huge data sets are now publicly available. There are several ways to turn those large amounts of data into useful knowledge. 
 Here we focus on exploratory data analysis, or unsupervised machine learning, which means finding structural information without prior knowledge.
@@ -26,6 +27,7 @@ Below is an animation demonstating the Kmean algorithm, based on a wonderful [K-
 <img src="Other_Image/Kmean_illustration/Kmeans.gif" width="640">
 </p>
 
+---
 # Parallel Kmeans Algorithms
 
 ## OpenMP, MPI and hybrid MPI-OpenMP parallelization
@@ -70,6 +72,7 @@ Interestingly, for N_MPI*n_omp=32, we have tested 4 cases (N_MPI,n_omp) = (32,1)
 
 ## Advanced Feature: CUDA
 
+---
 # Applications
 ## Forest Cover Type Classification
 
@@ -91,6 +94,7 @@ In addition, this type of problems usually involves a very large dataset with ve
 <img src="Data_Analysis/figures/PV.png" width="480">
 </p>
 
+---
 # Computational Platforms and Software Libraries
 
 ## Amazon EC2 cloud computing environment
