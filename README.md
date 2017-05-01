@@ -101,8 +101,8 @@ Compute the 7 cluster centers for use.
 We choose K from 7 to 30, repeat the above steps and find that 23 is the best cluster number. Finally we perform k-means on the whole training set to get the 7 centers and test on the testing set. The finally classification accuracy is 28.9%.
 
 <p align="center">
-<img src="Data_Analysis/covertype_cluster/figures/vis_label.png" width="450" height="280">
-<img src="Data_Analysis/covertype_cluster/figures/vis_pred.png" width="450" height="280">
+<img src="Data_Analysis/covertype_cluster/figures/vis_label.png" width="600" height="350">
+<img src="Data_Analysis/covertype_cluster/figures/vis_pred.png" width="600" height="350">
 </p>
 
 
