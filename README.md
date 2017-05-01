@@ -6,6 +6,7 @@
   * [Applications](#applications)
       * [Forest Cover Type Classification](#forest-cover-type-classification)
       * [Advanced Feature: Detecting Abnormal Climate Events](#advanced-feature-detecting-abnormal-climate-events)
+  * [Discussion](#discussion)
   * [Computational Platforms and Software Libraries](#computational-platforms-and-software-libraries)
   * [References](#references)
   
@@ -73,6 +74,19 @@ Interestingly, for N_MPI*n_omp=32, we have tested 4 cases (N_MPI,n_omp) = (32,1)
 
 ## Advanced Feature: CUDA
 
+Given the massive potential of parallelism on GPU, we implemented a parallel version of k-means algorithm using Nvidia CUDA library. In our implementation, we parallelize the E-step by distributing the computations of the nearest distance over blocks on "device". Also, 
+we use reduction to help check the convergence of clustering (see the "reduce" function). For M-step, we decide not to parallelize (parallelize means using reduction in this case), because by including the time for data to tranfer between device and host, which is a huge burden, the parallel version has no outstanding advantages over the serial version of M-step. Similar to the OpenMP version, our focus is also on the E-step. [(View our CUDA code)](Parallel_Algorithm/Cuda/kmeans_cdf.cu)
+
+Generally, we see that the timing and scaling is quite promising when the number of threads per block is less than 32. The "other" portion is no doubt the data tranfer between device and host, and it's even a more severe bottleneck than the serial E-step. By the way, we can definitely improve this by using better I/O hardware, i.e. using SSD instead of EBS volume for the GPU instance. Also, note that compared to OpenMP/MPI version, the time of E-step using CUDA is sinigicantly shorter. 
+
+<p align="center">
+<img src="Timing_Results/plots/Cuda_scaling.jpg" width="720">
+</p>
+
+The weird bump up as the number of threads goes up to 64 is because we run out of shared memory, but we're not sure why it affects the M-step so much. 
+
+For optimization, currently we've used parallel reduction to speedup the checking of convergence, and matrix transpose to improve memory access locality as the number of points is significantely larger than the number of features. We haven't tried deploying this version on multiple GPU, because the documentation is rare online and a single Tesla K80 GPU has already enough CUDA cores (4992 cores, 26 SMs, 2048 threads per SM) to parallelize our computation.
+
 ---
 # Applications
 ## Forest Cover Type Classification
@@ -105,7 +119,7 @@ We choose K from 7 to 30, repeat the above steps and find that 23 is the best cl
 <img src="Data_Analysis/covertype_cluster/figures/vis_pred.png" width="600" height="350">
 </p>
 
-
+The classification accuracy is not very high, so we would like to take a further look at the dataset. It is hard to directly visualize the dataset due to its high feature dimension, so we apply PCA to perform dimension reduction first and then plot the scatter graph based on the first two principle components. We choose 10 percent out of the testing samples, and color code the points using the true labels(the first graph) and the predicted labels(the second graph). Now we could see that, the original data points are acutally mixed. The labels do not correspond to different cluster, but the result of our k-means algorithm actually does a good clustering job since the lumps are seperated well. Therefore, for this problem, more complicated algorithms such as artifical neural network would do a better job (Dean, 1999) with classification accuracy at around 70%. But our result is already much better than the randomly classification which only holds an accuracy at around 14%.
 
 ## Advanced Feature: Detecting Abnormal Climate Events
 In this section, we will explore the application of k-means clustering technique on identifying abnormal climate events. Abnormal climate events are usually identified if a highly simplified index exceeds an arbitrary threshold. For example, El Nino events are identified if the Nino 3.4 index exceeds the threshold of 0.5&deg;C. This simple criteria works in some cases, however, there are two caveats associated with this methodology. First, the highly simplified index may not well capture all the main dynamic aspects. Second, setting an arbitrary threshold makes it a subjective way of identifying abnormal events.  
@@ -160,6 +174,12 @@ Furthermore, we are also interested in different types of abnormal events, becau
 <p align="center">
 Figure 4: Averaged potential vorticity for each sub-cluster
 </p>
+
+---
+# Discussion
+
+K-means is a fast and simple clustering method, while some weakness could not be ignored as well. For instance, the cluster number K needs to be specified up front; initial points are randomized thus it could actually only arrives local minimums. Scientists came up with several more complicated clustering algorithms: Hierarchical Agglomerative Clustering (HAC) and Mixture of Gaussians. HAC is a clustering method from the bottom up and generates a hierarchy of clusters; mixture models are probabilistic models that view data as coming from a mixture over different components of a distribution, and k-means clustering with its associated expectation-maximization algorithm is actually a special case of a Gaussian mixture model. Those advanced methods do perform well sometimes, but people still tend to use k-means in many cases, especially with large datasets. Studies show that k-means or its modified versions could do a great job in image segmentation, grouping of retail items(Kusrini, 2015) or research of environmental problems like greenhouse gas emissions(Kijewska and Bluszcz, 2015). K-means is often combined with other advanced methodologies or be used as a preprocessing method as well. It could be combined wiht SVM to perform automatic text classification(Perrone and Connell,2000), or be used for initialization in HMM model(Hu and Zanibbi, 2011). The extensive application space and the cheap computational cost make k-means remain a popular research method today, and is also the reason why we choose to parallel in this project.
+
 
 ---
 # Computational Platforms and Software Libraries
