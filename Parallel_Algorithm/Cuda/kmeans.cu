@@ -1,14 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
-#include <cassert>
 #include <fstream>
 #include <string>
 #include <vector>
 #include <sstream>
+#include <time.h>
+#include <sys/time.h>
 
 using namespace std;
-
+double iStart1, iStart2, iStart3a, iStart3b, iStart4a, iStart4b, iStart4c, iStart5;
+double iElaps1=0, iElaps2=0, iElaps3a=0, iElaps3b=0, iElaps4=0, iElaps5=0;
+// Hold configurations for Kmeans
 struct Info {
   int     numPoints;
   int     dim;
@@ -19,32 +22,68 @@ struct Info {
   float **centroids;
   int     thresholdLoops;
   float   thresholdFraction;
+  int     threadPerBlock;
 };
 
-inline int nextPowerOfTwo(int v) {
-  v--;
-  v = v >> 1 | v;
-  v = v >> 2 | v;
-  v = v >> 4 | v;
-  v = v >> 8 | v;
-  v = v >> 16 | v;
-  return ++v;
+// ************* Utils ************* //
+
+double cpuSecond() {
+    struct timeval tp;
+    gettimeofday(&tp,NULL);
+    return ((double)tp.tv_sec + (double)tp.tv_usec * 1.e-6);
 }
 
-__host__ __device__ inline static float computeDist(int    dim,
-                                                    int    numPoints,
-                                                    int    numCentroids,
-                                                    float *objects,
-                                                    float *clusters,
-                                                    int    objectId,
-                                                    int    clusterId) {
-  float res = 0;
+static inline int nextPowerOfTwo(int v) {
+  int res = v;
+  for (int i = 1; i <= 16; i *= 2) {
+    res |= res >> i;
+  }
+  return res + 1;
+}
 
-  for (int i = 0; i < dim; i++) {
-    res +=
-      (objects[numPoints * i + objectId] - clusters[numCentroids * i + clusterId]) *
-      (objects[numPoints * i + objectId] -
-       clusters[numCentroids * i + clusterId]);
+float** make2DArray(int x, int y) {
+  float **res = (float **)malloc(x * sizeof(float *));
+
+  // for (int i = 0; i < x; i++) {
+  //   res[i] = (float *)malloc(y * sizeof(float));
+  // }
+  res[0] = (float *)malloc(x * y * sizeof(float));
+  for (size_t i = 1; i < x; i++) res[i] = res[i-1] + y;
+  for (size_t i = 0; i < x; i++) {
+    for (size_t j = 0; j < y; j++) {
+      res[i][j] = 0.0;
+    }
+  }
+  return res;
+}
+
+void invert2DArray(float **A, float **B, int x, int y) {
+  for (int i = 0; i < x; i++) {
+    for (int j = 0; j < y; j++) {
+      A[i][j] = B[j][i];
+    }
+  }
+}
+
+void copy2DArray(float **A, float **B, int x, int y) {
+  for (int i = 0; i < x; i++) {
+    for (int j = 0; j < y; j++) {
+      A[i][j] = B[i][j];
+    }
+  }
+}
+
+// ************* Utils ************* //
+
+__host__ __device__ inline static float
+    computeDist(Info* info, int pointId, int centroidId, int distType, float *gPoints, float *gCentroids) {
+  float res = 0;
+  if (distType == 0) {
+    for (int i = 0; i < info->dim; i++) {
+      res +=
+        (gPoints[i * (info->numPoints) + pointId] - gCentroids[i * (info->numCentroids) + centroidId]) *
+        (gPoints[i * (info->numPoints) + pointId] - gCentroids[i * (info->numCentroids) + centroidId]);
+    }
   }
   return res;
 }
@@ -76,74 +115,49 @@ __global__ static void reduce(int *g_idata, int l1, int l2) {
   }
 }
 
-__global__ static void find_nearest_cluster(int    dim,
-                                            int    numPoints,
-                                            int    numCentroids,
-                                            float *objects,
-                                            float *deviceClusters,
-                                            int   *belongs,
-                                            int   *intermediates) {
-  extern __shared__ char sharedMemory[];
-  unsigned char *membershipChanged = (unsigned char *)sharedMemory;
-  float *clusters                  = deviceClusters;
+__global__ static void nearestCentroid(int *blockResult, int *gBelongs, float *gPoints, float *gCentroids, Info *gInfo) {
 
-  membershipChanged[threadIdx.x] = 0;
+  int pointId = blockDim.x * blockIdx.x + threadIdx.x;
+  if (pointId >= (gInfo->numPoints)) return;
 
-  int objectId = blockDim.x * blockIdx.x + threadIdx.x;
+  // For test on test.txt
+  // printf("Thread: %d - %.2f,  %.2f, %.2f,  %.2f \n", pointId, gCentroids[0], gCentroids[1], gCentroids[2], gCentroids[3]);
+  // printf("Thread: %d - %.2f,  %.2f, %.2f,  %.2f, %.2f,  %.2f, %.2f,  %.2f \n",
+  //          pointId, gPoints[0], gPoints[1], gPoints[2], gPoints[3], gPoints[4], gPoints[5], gPoints[6], gPoints[7]);
 
-  if (objectId < numPoints)
-  {
-    int   index;
-    float dist, min_dist;
+  // Get the minimum distance
+  float mDist = computeDist(gInfo, pointId, 0, 0, gPoints, gCentroids);
 
-    /*find the cluster id that has min distance to object*/
-    index    = 0;
-    min_dist = computeDist(dim,
-                           numPoints,
-                           numCentroids,
-                           objects,
-                           clusters,
-                           objectId,
-                           0);
-
-    for (int i = 0; i < numCentroids; i++)
-    {
-      dist = computeDist(dim,
-                         numPoints,
-                         numCentroids,
-                         objects,
-                         clusters,
-                         objectId,
-                         i);
-
-      /* no need square root */
-      if (dist < min_dist)
-      {
-        min_dist = dist;
-        index    = i;
-      }
+  int tmpIdx = 0;
+  int numCentroids = gInfo->numCentroids;
+  for (int i = 0; i < numCentroids; i++) {
+    float tmpDist = computeDist(gInfo, pointId, i, 0, gPoints, gCentroids);
+    if (tmpDist < mDist) {
+      mDist  = tmpDist;
+      tmpIdx = i;
     }
+  }
 
-    if (belongs[objectId] != index) {
-      membershipChanged[threadIdx.x] = 1;
+  // use reduction to add the total number of changes (change from one centroid to another) in this block
+  extern __shared__ int sdata2[];
+  sdata2[threadIdx.x] = 0;
+  if (gBelongs[pointId] != tmpIdx) {
+    sdata2[threadIdx.x] = 1;
+  }
+  gBelongs[pointId] = tmpIdx;
+  __syncthreads();
+
+  // Reduction
+  for (unsigned int s = blockDim.x / 2; s > 0; s >>= 1) {
+    if (threadIdx.x < s) {
+      sdata2[threadIdx.x] += sdata2[threadIdx.x + s];
     }
-    belongs[objectId] = index;
-
     __syncthreads();
+  }
 
-    for (unsigned int s = blockDim.x / 2; s > 0; s >>= 1)
-    {
-      if (threadIdx.x < s)
-      {
-        membershipChanged[threadIdx.x] += membershipChanged[threadIdx.x + s];
-      }
-      __syncthreads();
-    }
-
-    if (threadIdx.x == 0)
-    {
-      intermediates[blockIdx.x] = membershipChanged[0];
-    }
+  // Put the sum to the location corresbonding to current block
+  if (threadIdx.x == 0) {
+    blockResult[blockIdx.x] = sdata2[0];
   }
 }
 
@@ -156,23 +170,20 @@ void processData(char *fileName, Info *info) {
   // readX(FILE_NAME,&X,&GUESS,&N_samples,&N_features,&N_clusters,&N_repeat);
 
   // Test purpose
-  N_samples  = 100;
-  N_features = 9;
-  N_clusters = 4;
+  N_samples  = 4;
+  N_features = 2;
+  N_clusters = 2;
   N_repeat   = 10;
 
   info->numPoints         = N_samples;
   info->dim               = N_features;
   info->numCentroids      = N_clusters;
   info->numRepeats        = N_repeat;
-  info->thresholdFraction = 0.001;
-  info->thresholdLoops    = 500;
+  info->thresholdFraction = 0.005;
+  info->thresholdLoops    = 200;
 
   // Process data point
-  X = new float*[N_samples];
-  for(int i = 0; i < N_samples; i++) {
-     X[i] = new float[N_features];
-  }
+  X = make2DArray(N_samples, N_features);
 
   string str(fileName);
   ifstream file(str);
@@ -181,7 +192,7 @@ void processData(char *fileName, Info *info) {
      while (getline(file, line1)) {
      std::istringstream iss(line1);
      int j = -1;
-     for(string s; iss >> s; ) {
+     for(string s; iss >> s;) {
              if (j == -1) {
                      j++;
                      continue;
@@ -190,49 +201,17 @@ void processData(char *fileName, Info *info) {
              X[i][j] = stof(s);
              j++;
      }
-     cout << "\n";
      i++;
   }
   info->points = X;
 
-
   /* belongs: the cluster id for each data object */
   int *belongs = new int[N_samples];
-
   for (i = 0; i < N_samples; i++) belongs[i] = -1;
   info->belongs = belongs;
 }
 
-float** make2DArray(int x, int y) {
-  float **res = (float **)malloc(x * sizeof(float *));
 
-  for (int i = 0; i < x; i++) {
-    res[i] = (float *)malloc(y * sizeof(float));
-  }
-
-  for (int i = 0; i < x; i++) {
-    for (int j = 0; j < y; j++) {
-      res[i][j] = 0;
-    }
-  }
-  return res;
-}
-
-void invert2DArray(float **A, float **B, int x, int y) {
-  for (int i = 0; i < x; i++) {
-    for (int j = 0; j < y; j++) {
-      A[i][j] = B[j][i];
-    }
-  }
-}
-
-void copy2DArray(float **A, float **B, int x, int y) {
-  for (int i = 0; i < x; i++) {
-    for (int j = 0; j < y; j++) {
-      A[i][j] = B[i][j];
-    }
-  }
-}
 
 void cudaKmeans(Info *info) {
   // Initialization
@@ -244,37 +223,41 @@ void cudaKmeans(Info *info) {
   int* belongs          = info->belongs;
   float **points        = info->points;
   float **centroids     = info->centroids;
+  int threadPerBlock    = info->threadPerBlock;
 
-
-  // invert
+  // invert (transpose matrix)
   float **iPoints = make2DArray(dim, numPoints);
   invert2DArray(iPoints, points, dim, numPoints);
 
   // initial guess
-  float **iCentroids = make2DArray(numCentroids, numPoints);
-  copy2DArray(iCentroids, points, numCentroids, numPoints);
+  float **iCentroids = make2DArray(dim, numCentroids);
+  copy2DArray(iCentroids, iPoints, dim, numCentroids);
+  // invert2DArray(iCentroids, points, dim, numCentroids);
 
   // centroid -> number of points
   int *pointsCount   = new int[numCentroids];
-  float **iNewCentroids = make2DArray(numCentroids, numPoints);
+  float **iNewCentroids = make2DArray(dim, numCentroids);
 
   // Some cuda constants
-  const unsigned int bthreads = 32;
+  const unsigned int bthreads = threadPerBlock;
   const unsigned int l1       = (numPoints + bthreads - 1) / bthreads;
   const unsigned int l2       = nextPowerOfTwo(l1);
-  const unsigned int sdsize1  = bthreads * sizeof(unsigned char); // shared
-                                                                  // memory size
-  const unsigned int sdsize2  = l2 * sizeof(unsigned int);        // shared
-                                                                  // memory size
+  const unsigned int sdsize2  = bthreads * sizeof(unsigned int); // shared memory size for sdata2
+  const unsigned int sdsize1  = l2 * sizeof(unsigned int); // shared memory size for sdata1
 
   // Cuda device Initialization
   float *gPoints;
   float *gCentroids;
   int   *gBelongs;
+  Info   *gInfo;
   int   *tmp;
+
+  // Data transfer
+  iStart4a = cpuSecond();
   cudaMalloc(&gPoints,    numPoints * dim * sizeof(float));
   cudaMalloc(&gCentroids, numCentroids * dim * sizeof(float));
   cudaMalloc(&gBelongs,   numPoints * sizeof(int));
+  cudaMalloc((void**)&gInfo,   sizeof(Info));
   cudaMalloc(&tmp,        l2 * sizeof(unsigned int)); // For reduction
   cudaMemcpy(gBelongs,
              belongs,
@@ -284,57 +267,118 @@ void cudaKmeans(Info *info) {
              iPoints[0],
              numPoints * dim * sizeof(float),
              cudaMemcpyHostToDevice);
+  cudaMemcpy(gInfo,info,sizeof(Info),cudaMemcpyHostToDevice);
+
+  iElaps4 += cpuSecond() - iStart4a;
 
   int count = 0;
-  float frac = 0.0;
-  do {
-    cudaMemcpy(gCentroids, iCentroids[0], numCentroids * dim * sizeof(float), cudaMemcpyHostToDevice);
+  float frac = 1.0;
 
-    find_nearest_cluster <<< l1, bthreads, sdsize1 >>>
-    (dim, numPoints, numCentroids, gPoints, gCentroids, gBelongs, tmp);
+  while (count < thresholdLoops) {
+    iStart4b = cpuSecond();
+    cudaMemcpy(gCentroids, iCentroids[0], dim * numCentroids * sizeof(float), cudaMemcpyHostToDevice);
+    iElaps4 += cpuSecond() - iStart4b;
+
+    // E-Step: assign points to the nearest cluster center
+    iStart2 = cpuSecond();
+    // nearestCentroid<<<l1, bthreads, sdsize2>>>(dim, numPoints, numCentroids, gPoints, gCentroids, gBelongs, tmp);
+    nearestCentroid<<<l1, bthreads, sdsize2>>>(tmp, gBelongs, gPoints, gCentroids, gInfo);
     cudaDeviceSynchronize();
+    iElaps2 += (cpuSecond() - iStart2);
 
-    reduce <<< 1, l2, sdsize2 >>> (tmp, l1, l2);
-    cudaDeviceSynchronize();
-
-    int d;
-    cudaMemcpy(&d, tmp, sizeof(int), cudaMemcpyDeviceToHost);
-    frac = (float)d;
-
+    // Update belongs
+    iStart4c = cpuSecond();
     cudaMemcpy(belongs, gBelongs, numPoints * sizeof(int), cudaMemcpyDeviceToHost);
+    iElaps4 += cpuSecond() - iStart4c;
 
-    // Add up objects coordinates for each centroid
+    // M-Step first half: set the cluster centers to the mean
+    iStart3a = cpuSecond();
+
+    // Clear the two temp variables
+    for (int i = 0; i < numCentroids; i++) {
+      pointsCount[i] = 0;
+      for (int j = 0; j < dim; j++) {
+        iNewCentroids[j][i] = 0.0;
+      }
+    }
+
+    // Add up points in each centroid
     for (int i = 0; i < numPoints; i++) {
       int idx = belongs[i];
       pointsCount[idx] += 1;
-
       for (int j = 0; j < dim; j++) {
         iNewCentroids[j][idx] += points[i][j];
       }
     }
+    iElaps3a += cpuSecond() - iStart3a;
 
-    // Update centroids
+    // M-Step second half: convert the sum to the mean
+    // Update to new centroids
+    iStart3b = cpuSecond();
     for (int i = 0; i < numCentroids; i++) {
       for (int j = 0; j < dim; j++) {
         if (pointsCount[i] > 0) {
           iCentroids[j][i] = iNewCentroids[j][i] / pointsCount[i];
         }
-        iNewCentroids[j][i] = 0.0;
       }
-      pointsCount[i] = 0;
     }
-    frac /= numPoints;
-    count++;
-  } while (frac > thresholdFraction && count < 500);
+    iElaps3b += cpuSecond() - iStart3b;
 
+    // Check convergence
+    iStart5 = cpuSecond();
+
+    // Check if too few number of points change their centroids
+    reduce <<<1, l2, sdsize1>>>(tmp, l1, l2);
+    cudaDeviceSynchronize();
+    int tmpFloat;
+    cudaMemcpy(&tmpFloat, tmp, sizeof(int), cudaMemcpyDeviceToHost);
+    frac = (float)tmpFloat / numPoints;
+    cout << "Iteration: " << count << "," << frac << "," << tmpFloat  << "\n";
+    count++;
+    if (frac <= thresholdFraction) break;
+
+    iElaps5 += cpuSecond() - iStart5;
+
+  }
+
+  centroids = make2DArray(numCentroids, dim);
   invert2DArray(centroids, iCentroids, numCentroids, dim);
+  info->centroids = centroids;
+
+  // Free device memory
+  cudaFree(gPoints);
+  cudaFree(gCentroids);
+  cudaFree(gBelongs);
+  cudaFree(tmp);
 
 }
 
 int main(int argc, char *argv[]) {
   Info *info     = new Info;
-  char *fileName = argv[1];
-
+  info->threadPerBlock = atoi(argv[1]);
+  char *fileName = argv[2];
   processData(fileName, info);
-  cudaKmeans(info);
+
+  for (int i = 0; i < info->numRepeats; i++) {
+    iStart1 = cpuSecond();
+    cudaKmeans(info);
+    iElaps1 += cpuSecond() - iStart1;
+
+    // cout << info->centroids[0][0] << "," << info->centroids[0][1] << ","
+    //      << info->centroids[1][0] << "," << info->centroids[1][1] << "\n";
+
+    // Reload info
+    delete(info);
+    info     = new Info;
+    info->threadPerBlock = atoi(argv[1]);
+    processData(fileName, info);
+  }
+
+
+  cout << "Total time: " << iElaps1*1000 << "\n";
+  cout << "E-step time use (ms): " << iElaps2*1000 << "\n";
+  cout << "M-step-1st-half time use (ms): " << iElaps3a*1000 << "\n";
+  cout << "M-step-2nd-half time use (ms): " << iElaps3b*1000 << "\n";
+  cout << "Cuda Data IO (ms): " << iElaps4*1000 << "\n";
+  cout << "Other (ms): " << iElaps5*1000 << "\n";
 }
