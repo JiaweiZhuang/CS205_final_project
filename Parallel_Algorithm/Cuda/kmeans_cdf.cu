@@ -7,9 +7,17 @@
 #include <sstream>
 #include <time.h>
 #include <sys/time.h>
+extern "C" {
+  #include <netcdf.h>
+}
 
 using namespace std;
-double iStart1, iStart2, iStart3a, iStart3b, iStart4a, iStart4b, iStart4c, iStart5;
+
+// #define FAKE_DATA "../test_data/Blobs_smp20000_fea30_cls8.nc"
+#define ERRCODE 2
+#define ERR(e) {printf("Error: %s\n", nc_strerror(e)); exit(ERRCODE);}
+
+double iStart1, iStart2, iStart3a, iStart3b, iStart4a, iStart4b, iStart4c, iStart4d, iStart5;
 double iElaps1=0, iElaps2=0, iElaps3a=0, iElaps3b=0, iElaps4=0, iElaps5=0;
 // Hold configurations for Kmeans
 struct Info {
@@ -20,12 +28,88 @@ struct Info {
   int    *belongs;
   float **points;
   float **centroids;
+  float **guess;
   int     thresholdLoops;
   float   thresholdFraction;
   int     threadPerBlock;
 };
 
-// ************* Utils ************* //
+// ************************** Utils ************************** //
+
+float** Make2DFloatArray(int rows, int cols) {
+    float *data = (float *)malloc(rows*cols*sizeof(float));
+    float **array= (float **)malloc(rows*sizeof(float*));
+    for (int i=0; i<rows; i++)
+        array[i] = &(data[cols*i]);
+
+    return array;
+}
+int** Make2DIntArray(int rows, int cols) {
+    int *data = (int *)malloc(rows*cols*sizeof(int));
+    int **array= (int **)malloc(rows*sizeof(int*));
+    for (int i=0; i<rows; i++)
+        array[i] = &(data[cols*i]);
+
+    return array;
+}
+
+int readX(char* FILE_NAME, float*** p_X,int*** p_GUESS, int* p_N_samples,int* p_N_features, int* p_N_clusters, int* p_N_repeat) {
+    int ncid, varid,dimid;
+    int retval;
+    size_t N_temp;
+
+    // printf("Reading data...\n");
+
+    /* Open the file. NC_NOWRITE tells netCDF we want read-only access
+     * to the file.*/
+    if ((retval = nc_open(FILE_NAME, NC_NOWRITE, &ncid)))
+       ERR(retval);
+
+    /* Get the size of the data for dynamical allocation*/
+    nc_inq_dimid(ncid,"N_samples",&dimid);
+    nc_inq_dimlen(ncid,dimid,&N_temp);
+    *p_N_samples = (int)N_temp;
+    // printf("Number of samples: %d \n",*p_N_samples);
+
+    nc_inq_dimid(ncid,"N_features",&dimid);
+    nc_inq_dimlen(ncid,dimid,&N_temp);
+    *p_N_features = (int)N_temp;
+    // printf("Number of features: %d \n",*p_N_features);
+
+    nc_inq_dimid(ncid,"N_clusters",&dimid);
+    nc_inq_dimlen(ncid,dimid,&N_temp);
+    *p_N_clusters = (int)N_temp;
+    // printf("Number of clusters: %d \n",*p_N_clusters);
+
+    nc_inq_dimid(ncid,"N_repeat",&dimid);
+    nc_inq_dimlen(ncid,dimid,&N_temp);
+    *p_N_repeat = (int)N_temp;
+    // printf("Number of repeated runs: %d \n",*p_N_repeat);
+
+     /* Get the varid of the data variable, based on its name. */
+    if ((retval = nc_inq_varid(ncid, "X", &varid)))
+       ERR(retval);
+    /* Read the data. */
+    *p_X = Make2DFloatArray(*p_N_samples,*p_N_features);
+    if ((retval = nc_get_var_float(ncid, varid, (*p_X)[0])))
+       ERR(retval);
+
+     /* Initial Guess*/
+    if ((retval = nc_inq_varid(ncid, "GUESS", &varid)))
+       ERR(retval);
+    *p_GUESS = Make2DIntArray(*p_N_repeat,*p_N_clusters);
+    if ((retval = nc_get_var_int(ncid, varid, (*p_GUESS)[0])))
+       ERR(retval);
+
+    /*close the netcdf file*/
+    if ((retval = nc_close(ncid) ))
+       ERR(retval);
+
+    // printf("Reading data finished. \n");
+
+    return 0;
+ }
+
 
 double cpuSecond() {
     struct timeval tp;
@@ -73,7 +157,7 @@ void copy2DArray(float **A, float **B, int x, int y) {
   }
 }
 
-// ************* Utils ************* //
+// ************************** Utils ************************** //
 
 __host__ __device__ inline static float
     computeDist(Info* info, int pointId, int centroidId, int distType, float *gPoints, float *gCentroids) {
@@ -161,53 +245,42 @@ __global__ static void nearestCentroid(int *blockResult, int *gBelongs, float *g
   }
 }
 
-void processData(char *fileName, Info *info) {
+void processData(char *fileName, Info *info, int i_repeat) {
   float **X;
   int   **GUESS;
 
   int N_samples, N_features, N_clusters, N_repeat;
 
-  // readX(FILE_NAME,&X,&GUESS,&N_samples,&N_features,&N_clusters,&N_repeat);
+  readX(fileName,&X,&GUESS,&N_samples,&N_features,&N_clusters,&N_repeat);
+
+  // cout << N_samples << "," <<  N_features << ","  <<  N_clusters << "," << N_repeat << '\n';
 
   // Test purpose
-  N_samples  = 4;
-  N_features = 2;
-  N_clusters = 2;
-  N_repeat   = 10;
+  // N_samples  = 4;
+  // N_features = 2;
+  // N_clusters = 2;
+  // N_repeat   = 1;
 
   info->numPoints         = N_samples;
   info->dim               = N_features;
   info->numCentroids      = N_clusters;
   info->numRepeats        = N_repeat;
-  info->thresholdFraction = 0.005;
+  info->thresholdFraction = 0.001;
   info->thresholdLoops    = 200;
+  info->points            = X;
 
-  // Process data point
-  X = make2DArray(N_samples, N_features);
-
-  string str(fileName);
-  ifstream file(str);
-     string line1;
-     int i = 0;
-     while (getline(file, line1)) {
-     std::istringstream iss(line1);
-     int j = -1;
-     for(string s; iss >> s;) {
-             if (j == -1) {
-                     j++;
-                     continue;
-             }
-             // cout << s << " ";
-             X[i][j] = stof(s);
-             j++;
-     }
-     i++;
-  }
-  info->points = X;
+  float **guess = make2DArray(N_clusters, N_features);
+  for (int k=0; k<N_clusters; k++){
+       int initial_idx = GUESS[i_repeat][k];
+       for (int j=0; j<N_features; j++){
+           guess[k][j]=X[initial_idx][j];
+       }
+   }
+   info->guess = guess;
 
   /* belongs: the cluster id for each data object */
   int *belongs = new int[N_samples];
-  for (i = 0; i < N_samples; i++) belongs[i] = -1;
+  for (int i = 0; i < N_samples; i++) belongs[i] = -1;
   info->belongs = belongs;
 }
 
@@ -223,7 +296,10 @@ void cudaKmeans(Info *info) {
   int* belongs          = info->belongs;
   float **points        = info->points;
   float **centroids     = info->centroids;
+  float **guess         = info->guess;
   int threadPerBlock    = info->threadPerBlock;
+
+  iStart4d = cpuSecond();
 
   // invert (transpose matrix)
   float **iPoints = make2DArray(dim, numPoints);
@@ -231,12 +307,14 @@ void cudaKmeans(Info *info) {
 
   // initial guess
   float **iCentroids = make2DArray(dim, numCentroids);
-  copy2DArray(iCentroids, iPoints, dim, numCentroids);
-  // invert2DArray(iCentroids, points, dim, numCentroids);
+  // copy2DArray(iCentroids, iPoints, dim, numCentroids);
+  invert2DArray(iCentroids, guess, dim, numCentroids);
 
   // centroid -> number of points
   int *pointsCount   = new int[numCentroids];
   float **iNewCentroids = make2DArray(dim, numCentroids);
+
+  iElaps4 += cpuSecond() - iStart4d;
 
   // Some cuda constants
   const unsigned int bthreads = threadPerBlock;
@@ -333,7 +411,7 @@ void cudaKmeans(Info *info) {
     int tmpFloat;
     cudaMemcpy(&tmpFloat, tmp, sizeof(int), cudaMemcpyDeviceToHost);
     frac = (float)tmpFloat / numPoints;
-    cout << "Iteration: " << count << "," << frac << "," << tmpFloat  << "\n";
+    // cout << "Iteration: " << count << "," << frac << "," << tmpFloat  << "\n";
     count++;
     if (frac <= thresholdFraction) break;
 
@@ -341,9 +419,11 @@ void cudaKmeans(Info *info) {
 
   }
 
+  iStart4d = cpuSecond();
   centroids = make2DArray(numCentroids, dim);
   invert2DArray(centroids, iCentroids, numCentroids, dim);
   info->centroids = centroids;
+  iElaps4 += cpuSecond() - iStart4d;
 
   // Free device memory
   cudaFree(gPoints);
@@ -357,21 +437,28 @@ int main(int argc, char *argv[]) {
   Info *info     = new Info;
   info->threadPerBlock = atoi(argv[1]);
   char *fileName = argv[2];
-  processData(fileName, info);
+  processData(fileName, info, 0);
 
+  printf("Number of samples: %d \n",info->numPoints);
+  printf("Number of features: %d \n", info->dim);
+  printf("Number of clusters: %d \n", info->numCentroids);
+  printf("Number of repeated runs: %d \n", info->numRepeats);
   for (int i = 0; i < info->numRepeats; i++) {
+    // cout << "====== Begin Loop " << i << " ======\n";
     iStart1 = cpuSecond();
     cudaKmeans(info);
     iElaps1 += cpuSecond() - iStart1;
 
-    // cout << info->centroids[0][0] << "," << info->centroids[0][1] << ","
-    //      << info->centroids[1][0] << "," << info->centroids[1][1] << "\n";
+    // cout << "Ref: " << info->centroids[0][0] << "\n";
+    // cout << "====== End of Loop " << i << " ======\n";
+    // break;
 
     // Reload info
     delete(info);
+    if (i + 1== info->numRepeats) break;
     info     = new Info;
     info->threadPerBlock = atoi(argv[1]);
-    processData(fileName, info);
+    processData(fileName, info, i+1);
   }
 
 
@@ -380,5 +467,5 @@ int main(int argc, char *argv[]) {
   cout << "M-step-1st-half time use (ms): " << iElaps3a*1000 << "\n";
   cout << "M-step-2nd-half time use (ms): " << iElaps3b*1000 << "\n";
   cout << "Cuda Data IO (ms): " << iElaps4*1000 << "\n";
-  cout << "Other (ms): " << iElaps5*1000 << "\n";
+  cout << "Check Convergence (ms): " << iElaps5*1000 << "\n";
 }
