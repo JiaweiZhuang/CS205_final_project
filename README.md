@@ -82,6 +82,9 @@ Generally, we see that the timing and scaling is quite promising when the number
 <img src="Timing_Results/plots/Cuda_scaling.jpg" width="720">
 </p>
 
+The weird bump up as the number of threads goes up to 64 is because we run out of shared memory, but we're not sure why it affects the M-step so much. 
+
+For optimization, currently we've used parallel reduction to speedup the checking of convergence, and matrix transpose to improve memory access locality as the number of points is significantely larger than the number of features. We haven't tried deploying this version on multiple GPU, because the documentation is rare online and a single Tesla K80 GPU has already enough CUDA cores to parallelize our computation.
 
 ---
 # Applications
