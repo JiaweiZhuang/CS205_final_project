@@ -6,7 +6,7 @@
   * [Applications](#applications)
       * [Forest Cover Type Classification](#forest-cover-type-classification)
       * [Advanced Feature: Detecting Abnormal Climate Events](#advanced-feature-detecting-abnormal-climate-events)
-  * [Discussion](#disscussion)
+  * [Discussion](#discussion)
   * [Computational Platforms and Software Libraries](#computational-platforms-and-software-libraries)
   * [References](#references)
   
@@ -176,7 +176,7 @@ Figure 4: Averaged potential vorticity for each sub-cluster
 </p>
 
 ---
-## Discussion
+# Discussion
 
 K-means is a fast and simple clustering method, while some weakness could not be ignored as well. For instance, the cluster number K needs to be specified up front; initial points are randomized thus it could actually only arrives local minimums. Scientists came up with several more complicated clustering algorithms: Hierarchical Agglomerative Clustering (HAC) and Mixture of Gaussians. HAC is a clustering method from the bottom up and generates a hierarchy of clusters; mixture models are probabilistic models that view data as coming from a mixture over different components of a distribution, and k-means clustering with its associated expectation-maximization algorithm is actually a special case of a Gaussian mixture model. Those advanced methods do perform well sometimes, but people still tend to use k-means in many cases, especially with large datasets. Studies show that k-means or its modified versions could do a great job in image segmentation, grouping of retail items(Kusrini, 2015) or research of environmental problems like greenhouse gas emissions(Kijewska and Bluszcz, 2015). K-means is often combined with other advanced methodologies or be used as a preprocessing method as well. It could be combined wiht SVM to perform automatic text classification(Perrone and Connell,2000), or be used for initialization in HMM model(Hu and Zanibbi, 2011). The extensive application space and the cheap computational cost make k-means remain a popular research method today, and is also the reason why we choose to parallel in this project.
 
