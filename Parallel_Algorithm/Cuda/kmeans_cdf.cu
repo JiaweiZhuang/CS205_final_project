@@ -17,7 +17,7 @@ using namespace std;
 #define ERRCODE 2
 #define ERR(e) {printf("Error: %s\n", nc_strerror(e)); exit(ERRCODE);}
 
-double iStart1, iStart2, iStart3a, iStart3b, iStart4a, iStart4b, iStart4c, iStart5;
+double iStart1, iStart2, iStart3a, iStart3b, iStart4a, iStart4b, iStart4c, iStart4d, iStart5;
 double iElaps1=0, iElaps2=0, iElaps3a=0, iElaps3b=0, iElaps4=0, iElaps5=0;
 // Hold configurations for Kmeans
 struct Info {
@@ -299,6 +299,8 @@ void cudaKmeans(Info *info) {
   float **guess         = info->guess;
   int threadPerBlock    = info->threadPerBlock;
 
+  iStart4d = cpuSecond();
+
   // invert (transpose matrix)
   float **iPoints = make2DArray(dim, numPoints);
   invert2DArray(iPoints, points, dim, numPoints);
@@ -311,6 +313,8 @@ void cudaKmeans(Info *info) {
   // centroid -> number of points
   int *pointsCount   = new int[numCentroids];
   float **iNewCentroids = make2DArray(dim, numCentroids);
+
+  iElaps4 += cpuSecond() - iStart4d;
 
   // Some cuda constants
   const unsigned int bthreads = threadPerBlock;
@@ -415,9 +419,11 @@ void cudaKmeans(Info *info) {
 
   }
 
+  iStart4d = cpuSecond();
   centroids = make2DArray(numCentroids, dim);
   invert2DArray(centroids, iCentroids, numCentroids, dim);
   info->centroids = centroids;
+  iElaps4 += cpuSecond() - iStart4d;
 
   // Free device memory
   cudaFree(gPoints);
@@ -461,5 +467,5 @@ int main(int argc, char *argv[]) {
   cout << "M-step-1st-half time use (ms): " << iElaps3a*1000 << "\n";
   cout << "M-step-2nd-half time use (ms): " << iElaps3b*1000 << "\n";
   cout << "Cuda Data IO (ms): " << iElaps4*1000 << "\n";
-  cout << "Other (ms): " << iElaps5*1000 << "\n";
+  cout << "Check Convergence (ms): " << iElaps5*1000 << "\n";
 }

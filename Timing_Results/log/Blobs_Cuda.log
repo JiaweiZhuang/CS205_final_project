@@ -1,0 +1,98 @@
+ 
+=========================================
+=========================================
+testing with 1 threads per block on device
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+Total time: 783.192
+E-step time use (ms): 356.685
+M-step-1st-half time use (ms): 119.512
+M-step-2nd-half time use (ms): 0.067234
+Cuda Data IO (ms): 302.046
+Check Convergence (ms): 0.521421
+ 
+=========================================
+=========================================
+testing with 2 threads per block on device
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+Total time: 636.066
+E-step time use (ms): 202.417
+M-step-1st-half time use (ms): 132.744
+M-step-2nd-half time use (ms): 0.0743866
+Cuda Data IO (ms): 294.903
+Check Convergence (ms): 0.592709
+ 
+=========================================
+=========================================
+testing with 4 threads per block on device
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+Total time: 547.731
+E-step time use (ms): 108.101
+M-step-1st-half time use (ms): 138.242
+M-step-2nd-half time use (ms): 0.0698566
+Cuda Data IO (ms): 295.276
+Check Convergence (ms): 0.645161
+ 
+=========================================
+=========================================
+testing with 8 threads per block on device
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+Total time: 541.216
+E-step time use (ms): 69.1309
+M-step-1st-half time use (ms): 169.611
+M-step-2nd-half time use (ms): 0.089407
+Cuda Data IO (ms): 296.227
+Check Convergence (ms): 0.853777
+ 
+=========================================
+=========================================
+testing with 16 threads per block on device
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+Total time: 511.788
+E-step time use (ms): 38.1258
+M-step-1st-half time use (ms): 171.403
+M-step-2nd-half time use (ms): 0.0870228
+Cuda Data IO (ms): 295.944
+Check Convergence (ms): 0.88644
+ 
+=========================================
+=========================================
+testing with 32 threads per block on device
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+Total time: 2496.99
+E-step time use (ms): 245.165
+M-step-1st-half time use (ms): 1893.42
+M-step-2nd-half time use (ms): 0.981092
+Cuda Data IO (ms): 322.414
+Check Convergence (ms): 27.8046
+ 
+=========================================
+=========================================
+testing with 64 threads per block on device
+Number of samples: 20000 
+Number of features: 30 
+Number of clusters: 8 
+Number of repeated runs: 20 
+Total time: 2437.49
+E-step time use (ms): 162.151
+M-step-1st-half time use (ms): 1918.99
+M-step-2nd-half time use (ms): 0.959396
+Cuda Data IO (ms): 321.023
+Check Convergence (ms): 27.1459
