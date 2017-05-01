@@ -146,7 +146,7 @@ The vortex structure shown in Fig. 3 is consistent with the temperature anomaly.
 Figure 3: Averaged potential vorticity for each cluster
 </p>
 
-Further more, we are also interested in different types of abnormal events. 
+Furthermore, we are also interested in different types of abnormal events, because they may be caused by different mechanisms, and may have different effects on future weather patterns. Therefore, we further cluster the abnormal events based on the amplitude and phase angle of the wave-number one and two geo-potential height. We find that the vortex can be displaced toward different longitude, or even be split into two vortices.
 <p align="center">
 <img src="Data_Analysis/figures/SSWsubset.png" width="480">
 </p>
