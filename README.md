@@ -94,11 +94,18 @@ Compute the 7 cluster centers for use.
 3. For each data point in the validation set, assign this point to the cluster with the closest cluster center.
 4. Calculate the average classification accuracy of the validation set.
 
-We choose K from 7 to 30, repeat the above steps and find that 23 is the best cluster number. Finally we perform k-means on the whole training set to get the 7 centers and test on the testing set. The finally classification accuracy is 28.9%.
-
 <p align="center">
 <img src="Data_Analysis/covertype_cluster/figures/accuracy_graph.png" width="450" height="280">
 </p>
+
+We choose K from 7 to 30, repeat the above steps and find that 23 is the best cluster number. Finally we perform k-means on the whole training set to get the 7 centers and test on the testing set. The finally classification accuracy is 28.9%.
+
+<p align="center">
+<img src="Data_Analysis/covertype_cluster/figures/vis_label.png" width="450" height="280">
+<img src="Data_Analysis/covertype_cluster/figures/vis_pred.png" width="450" height="280">
+</p>
+
+
 
 ## Advanced Feature: Detecting Abnormal Climate Events
 In this section, we will explore the application of k-means clustering technique on identifying abnormal climate events. Abnormal climate events are usually identified if a highly simplified index exceeds an arbitrary threshold. For example, El Nino events are identified if the Nino 3.4 index exceeds the threshold of 0.5&deg;C. This simple criteria works in some cases, however, there are two caveats associated with this methodology. First, the highly simplified index may not well capture all the main dynamic aspects. Second, setting an arbitrary threshold makes it a subjective way of identifying abnormal events.  
