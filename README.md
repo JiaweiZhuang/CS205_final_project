@@ -6,6 +6,7 @@
   * [Applications](#applications)
       * [Forest Cover Type Classification](#forest-cover-type-classification)
       * [Advanced Feature: Detecting Abnormal Climate Events](#advanced-feature-detecting-abnormal-climate-events)
+  * [Discussion](#disscussion)
   * [Computational Platforms and Software Libraries](#computational-platforms-and-software-libraries)
   * [References](#references)
   
@@ -118,7 +119,7 @@ We choose K from 7 to 30, repeat the above steps and find that 23 is the best cl
 <img src="Data_Analysis/covertype_cluster/figures/vis_pred.png" width="600" height="350">
 </p>
 
-
+The classification accuracy is not very high, so we would like to take a further look at the dataset. It is hard to directly visualize the dataset due to its high feature dimension, so we apply PCA to perform dimension reduction first and then plot the scatter graph based on the first two principle components. We choose 10 percent out of the testing samples, and color code the points using the true labels(the first graph) and the predicted labels(the second graph). Now we could see that, the original data points are acutally mixed. The labels do not correspond to different cluster, but the result of our k-means algorithm actually does a good clustering job since the lumps are seperated well. Therefore, for this problem, more complicated algorithms such as artifical neural network would do a better job (Dean, 1999) with classification accuracy at around 70%. But our result is already much better than the randomly classification which only holds an accuracy at around 14%.
 
 ## Advanced Feature: Detecting Abnormal Climate Events
 In this section, we will explore the application of k-means clustering technique on identifying abnormal climate events. Abnormal climate events are usually identified if a highly simplified index exceeds an arbitrary threshold. For example, El Nino events are identified if the Nino 3.4 index exceeds the threshold of 0.5&deg;C. This simple criteria works in some cases, however, there are two caveats associated with this methodology. First, the highly simplified index may not well capture all the main dynamic aspects. Second, setting an arbitrary threshold makes it a subjective way of identifying abnormal events.  
@@ -173,6 +174,12 @@ Furthermore, we are also interested in different types of abnormal events, becau
 <p align="center">
 Figure 4: Averaged potential vorticity for each sub-cluster
 </p>
+
+---
+## Discussion
+
+K-means is a fast and simple clustering method, while some weakness could not be ignored as well. For instance, the cluster number K needs to be specified up front; initial points are randomized thus it could actually only arrives local minimums. Scientists came up with several more complicated clustering algorithms: Hierarchical Agglomerative Clustering (HAC) and Mixture of Gaussians. HAC is a clustering method from the bottom up and generates a hierarchy of clusters; mixture models are probabilistic models that view data as coming from a mixture over different components of a distribution, and k-means clustering with its associated expectation-maximization algorithm is actually a special case of a Gaussian mixture model. Those advanced methods do perform well sometimes, but people still tend to use k-means in many cases, especially with large datasets. Studies show that k-means or its modified versions could do a great job in image segmentation, grouping of retail items(Kusrini, 2015) or research of environmental problems like greenhouse gas emissions(Kijewska and Bluszcz, 2015). K-means is often combined with other advanced methodologies or be used as a preprocessing method as well. It could be combined wiht SVM to perform automatic text classification(Perrone and Connell,2000), or be used for initialization in HMM model(Hu and Zanibbi, 2011). The extensive application space and the cheap computational cost make k-means remain a popular research method today, and is also the reason why we choose to parallel in this project.
+
 
 ---
 # Computational Platforms and Software Libraries
