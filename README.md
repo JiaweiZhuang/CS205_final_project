@@ -73,6 +73,16 @@ Interestingly, for N_MPI*n_omp=32, we have tested 4 cases (N_MPI,n_omp) = (32,1)
 
 ## Advanced Feature: CUDA
 
+Given the massive potential of parallelism on GPU, we implemented a parallel version of k-means algorithm using Nvidia CUDA library. In our implementation, we parallelize the E-step by distributing the computations of the nearest distance over blocks on "device". Also, 
+we use reduction to help check the convergence of clustering (see the "reduce" function). For M-step, we decide not to parallelize (parallelize means using reduction in this case), because by including the time for data to tranfer between device and host, which is a huge burden, the parallel version has no outstanding advantages over the serial version of M-step. Similar to the OpenMP version, our focus is also on the E-step. [(View our CUDA code)](Parallel_Algorithm/Cuda/kmeans_cdf.cu)
+
+Generally, we see that the timing and scaling is quite promising when the number of threads per block is less than 32. The "other" portion is no doubt the data tranfer between device and host, and it's even a more severe bottleneck than the serial E-step. By the way, we can definitely improve this by using better I/O hardware, i.e. using SSD instand of EBS volume for the GPU instance. Also, note that compared to OpenMP/MPI version, the time of E-step using CUDA is sinigicantly shorter. 
+
+<p align="center">
+<img src="Timing_Results/plots/Cuda_scaling.jpg" width="720">
+</p>
+
+
 ---
 # Applications
 ## Forest Cover Type Classification
