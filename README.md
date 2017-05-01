@@ -121,7 +121,7 @@ We have tested the number of clusters from 2 to 4, and use Silhouette score to e
 Figure 1: Silhouette score
 </p>
 
-Fig 2 shows the temperature anomaly over the stratosphere for both clusters. The second cluster shows a substantial warming (more than 10K) than the first cluster. 
+Fig 2 shows the temperature anomaly over the stratosphere for both clusters. The second cluster shows a substantial warming (more than 10K) compared to the first cluster. 
 <p align="center">
 <img src="Data_Analysis/figures/T.png" width="480">
 </p>
@@ -129,6 +129,7 @@ Fig 2 shows the temperature anomaly over the stratosphere for both clusters. The
 Figure 2: Averaged temperature anomaly for each cluster
 </p>
 
+The vortex structure shown in Fig. 3 is consistent with the temperature anomaly. For normal events, the polar vortex centers at the pole, while the vortex is displaced during abnormal warming period. These results are consistent with the findings from Coughlin and Gray, 2009, in which the analysis is based on observational data. 
 <p align="center">
 <img src="Data_Analysis/figures/PV.png" width="480">
 </p>
@@ -136,6 +137,7 @@ Figure 2: Averaged temperature anomaly for each cluster
 Figure 3: Averaged potential vorticity for each cluster
 </p>
 
+Further more, we are also interested in different types of abnormal events. 
 <p align="center">
 <img src="Data_Analysis/figures/SSWsubset.png" width="480">
 </p>
