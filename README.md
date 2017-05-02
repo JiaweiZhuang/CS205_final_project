@@ -90,7 +90,7 @@ For optimization, currently we've used parallel reduction to speedup the checkin
 ---
 # Applications
 ## Forest Cover Type Classification
-In this section, we utilize k-means to perform forest covertype classification with cartographic variables only. Our dataset is obtained from the UCI KDD archive, and was original derived from US Forest Service (USFS) Region 2 Resource Information System data and US Geological Survey (USGS) and USFS data. The study area is in Roosevelt National Forest of northern Colorado, which is a forest region with the minimum human disturbance and therefore mostly goes through natural process.
+In this section, we utilize k-means to perform forest covertype classification with cartographic variables only. Our dataset is obtained from the UCI KDD archive, and was original derived from US Forest Service (USFS) Region 2 Resource Information System data and US Geological Survey (USGS) data. The study area is in Roosevelt National Forest of northern Colorado, which is a forest region with the minimum human disturbance and therefore mostly goes through natural process.
 
 <p align="center">
 <img src="Data_Analysis/covertype_cluster/figures/study_area_map.png" width="300" height="200">
@@ -103,7 +103,7 @@ Our first step is to normalize the feature values since some of them are in sing
 
 We then split the training set into a sub-training set and a validation set with the ratio 8:2. The testing set we obtained above would be untouched until the final test. Our selection process of the best K is as follows:
 1. cluster the sub-training set using k-means with a given K.
-2. pick the 7 purest cluster corresponding to each label to be the 7 standard clusters. 
+2. pick the 7 purest clusters corresponding to the 7 labels respectively to be the standard clusters. 
 Compute the 7 cluster centers for use.
 3. For each data point in the validation set, assign this point to the cluster with the closest cluster center.
 4. Calculate the average classification accuracy of the validation set.
@@ -112,14 +112,14 @@ Compute the 7 cluster centers for use.
 <img src="Data_Analysis/covertype_cluster/figures/accuracy_graph.png" width="450" height="280">
 </p>
 
-We choose K from 7 to 30, repeat the above steps and find that 23 is the best cluster number. Finally we perform k-means on the whole training set to get the 7 centers and test on the testing set. The finally classification accuracy is 28.9%.
+We choose K from 7 to 30, repeat the above steps and find that 23 is the best cluster number. Finally we perform k-means on the whole training set to get the 7 centers and test on the testing set. The final classification accuracy is around 30%.
 
 <p align="center">
 <img src="Data_Analysis/covertype_cluster/figures/vis_label.png" width="600" height="350">
 <img src="Data_Analysis/covertype_cluster/figures/vis_pred.png" width="600" height="350">
 </p>
 
-The classification accuracy is not very high, so we would like to take a further look at the dataset. It is hard to directly visualize the dataset due to its high feature dimension, so we apply PCA to perform dimension reduction first and then plot the scatter graph based on the first two principle components. We choose 10 percent out of the testing samples, and color code the points using the true labels(the first graph) and the predicted labels(the second graph). Now we could see that, the original data points are acutally mixed. The labels do not correspond to different cluster, but the result of our k-means algorithm actually does a good clustering job since the lumps are seperated well. Therefore, for this problem, more complicated algorithms such as artifical neural network would do a better job (Dean, 1999) with classification accuracy at around 70%. But our result is already much better than the randomly classification which only holds an accuracy at around 14%.
+The classification accuracy is not very high, so we would like to take a further look at the dataset. It is hard to directly visualize the dataset due to its high feature dimension, so we apply PCA to perform dimension reduction first and then plot the scatter graph based on the first two principle components. We choose 10 percent out of the testing samples, and color code the points using the true labels(the first graph) and the predicted labels(the second graph). Now we could see that, the original data points are acutally mixed on the 2D projection. Our k-means algorithm actually does a good clustering job since the lumps are seperated well in color. Therefore, for this problem, more complicated algorithms such as artifical neural network would do a better job (Dean, 1999) with classification accuracy at around 70%. But our result is already much better than the randomly classification which only holds an accuracy at around 14%.
 
 ## Advanced Feature: Detecting Abnormal Climate Events
 In this section, we will explore the application of k-means clustering technique on identifying abnormal climate events. Abnormal climate events are usually identified if a highly simplified index exceeds an arbitrary threshold. For example, El Nino events are identified if the Nino 3.4 index exceeds the threshold of 0.5&deg;C. This simple criteria works in some cases, however, there are two caveats associated with this methodology. First, the highly simplified index may not well capture all the main dynamic aspects. Second, setting an arbitrary threshold makes it a subjective way of identifying abnormal events.  
@@ -207,4 +207,10 @@ In C, we've provided a [script](Build_Library/netCDF_build/install_netCDF.sh) to
 It is also worth mentioning that, NetCDF is the standard data format used for the Intergovernmental Panel on Climate Change (IPCC) report :)
 
 # References
+Blackard, J.A., Dean, D.J., 1999. Comparative accuracies of artificial neural networks and discriminant analysis in predicting forest cover types from cartographic variables. Computers and Electronics in Agriculture 24 (1999): 131–151.
 Coughlin, K., and Lesley Janet Gray. "A continuum of sudden stratospheric warmings." *Journal of the Atmospheric Sciences* 66.2 (2009): 531-540.
+Li, M., Cheng, Y., Zhao, H., 2004. Unlabeled Data Classification via Support Vector Machines and k-means Clustering. Proceedings of the International Conference on Computer Graphics, Imaging and Visualization (CGIV’04).
+Kijewska, A., Bluszcz, A., 2015. Research of varying levels of greenhouse gas emissions in European countries using the k-means method. Atmospheric Pollution Research 7 (2016):935-944
+Kusrini, K. 2015. Grouping of Retail Items by Using K-Means Clustering.  Procedia Computer Science 72 ( 2015 ): 495–502.
+Perrone, M.P., Connell, S.D., 2000. K-Means Clustering for Hidden Markov Models. Proceedings of the Seventh International Workshop on Frontiers in Handwriting Recognition. 
+
