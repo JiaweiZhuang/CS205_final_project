@@ -12,18 +12,11 @@
   
 ---  
 # Introduction
-Many huge data sets are now publicly available. There are several ways to turn those large amounts of data into useful knowledge. 
-Here we focus on exploratory data analysis, or unsupervised machine learning, which means finding structural information without prior knowledge.
+K-means clustering is a simple and scalable clustering method, which partitions observations into k clusters in an objective manner. It has very broad applications, such as image segmentation, retail product classification (Kusrini, 2015), environmental problems like greenhouse gas emissions (Kijewska and Bluszcz, 2015). K-means clustering could be used in combination with other advanced methodologies. For example, it was used with support vector machine (SVM) to perform automatic text classification (Perrone and Connell, 2000). It could also be used as a preprocessing method, such as initialization in a hidden Markov model (HMM) (Hu and Zanibbi, 2011). Its extensive applications and its simple computational complexity make k-means clustering one of the popular methods today.
 
-Among all the unsupervised learning methods, k-means is a commonly used algorithm, which partitions observations into k clusters in which each 
-observation belongs to the cluster with the nearest mean. Finding the minimum of a k-means cost function is a NP-hard problem when the dimension 
-d>1 and the number of clusters k>1. Scientists came up with several heuristic methods to find the local minimum, but the process is still highly 
-computationally-intensive, especially with huge data sets. We want to implement a parallel version of a k-means heuristic method on a cluster of machines, 
-to significantly speed up the computing time of the clustering process, without any reduction on the accuracy rate of the clustering model.
+Finding the minimum of a k-means cost function is a NP-hard problem when the dimension d>1 and the number of clusters k>1. Scientists came up with several heuristic methods to find the local minimum, but the process is still computationally-intensive, especially for large datasets with high dimensional features. Therefore, we want to implement a parallel version of a k-means heuristic method on a cluster of machines, to significantly speed up the algorithm, without sacrificing its accuracy. 
 
-A typical approach for k-mean clustering is Expectation–Maximization (E–M). E-step assigns points to the nearest cluster center, while M-step sets the cluster centers to the mean. 
-
-Below is an animation demonstating the Kmean algorithm, based on a wonderful [K-means visualization made by Naftali Harris ](https://www.naftaliharris.com/blog/visualizing-k-means-clustering/).
+A typical approach for k-mean clustering is Expectation–Maximization (E–M). E-step assigns points to the nearest cluster center, while M-step sets the cluster centers to the mean. Below is an animation demonstating the Kmean algorithm, based on a wonderful [K-means visualization made by Naftali Harris ](https://www.naftaliharris.com/blog/visualizing-k-means-clustering/).
 
 <p align="center">
 <img src="Other_Image/Kmean_illustration/Kmeans.gif" width="640">
@@ -124,9 +117,9 @@ The classification accuracy is not very high, so we would like to take a further
 ## Advanced Feature: Detecting Abnormal Climate Events
 In this section, we will explore the application of k-means clustering technique on identifying abnormal climate events. Abnormal climate events are usually identified if a highly simplified index exceeds an arbitrary threshold. For example, El Nino events are identified if the Nino 3.4 index exceeds the threshold of 0.5&deg;C. This simple criteria works in some cases, however, there are two caveats associated with this methodology. First, the highly simplified index may not well capture all the main dynamic aspects. Second, setting an arbitrary threshold makes it a subjective way of identifying abnormal events.  
 
-K-means clustering serves as a powerful technique in dealing with those caveats. First, instead of using a highly simplified index, a high dimension feature vector characterizing the event from multiple dynamical aspects can be utilized. In addition, k-means clustering is highly scalable to cluster huge datasets, such as those from simulations. Second, k-means clustering is able to identify different states in a completely objective manner with no preconceived notion of the groups and no preselection on the basis of known influencing factors (Coughlin and Gray, 2009). Third, k-means clustering technique is especially useful for detecting abnormal events, because k-means clustering easily allows for uneven groups, whereas some other techniques, such as hierachical clustering, tend to determine groups of similar sizes.
+K-means clustering serves as a powerful technique in dealing with those caveats. First, instead of using a highly simplified index, a high dimensional feature vector characterizing the event from multiple dynamical aspects can be utilized. In addition, k-means clustering is highly scalable to cluster large datasets, such as those from simulations. Second, k-means clustering is able to identify different states in a completely objective manner with no preconceived notion of the groups and no preselection on the basis of known influencing factors (Coughlin and Gray, 2009). Third, k-means clustering technique is especially useful for detecting abnormal events, because k-means clustering easily allows for unevenly distributed clusters, whereas some other techniques, such as hierachical clustering, tend to determine clusters of similar sizes.
 
-The abnormal climate events we would like to explore is called sudden stratospheric warming (SSW), which happens sometime in the stratosphere near the North pole during winters. It is important to understand them because they usually lead extreme weathers in the troposphere by about a month, and thus have the potential to serve as a forecasting tool. 
+The abnormal climate events we would like to explore is called sudden stratospheric warming (SSW), which happens sometime in the stratosphere near the North pole during winters. It is important to understand them because they usually proceed extreme weathers in the troposphere by about a month, and thus have the potential to serve as a forecasting tool. 
 
 ---
 > ### What is Sudden Stratospheric Warming (SSW)?
@@ -207,10 +200,14 @@ In C, we've provided a [script](Build_Library/netCDF_build/install_netCDF.sh) to
 It is also worth mentioning that, NetCDF is the standard data format used for the Intergovernmental Panel on Climate Change (IPCC) report :)
 
 # References
-Blackard, J.A., Dean, D.J., 1999. Comparative accuracies of artificial neural networks and discriminant analysis in predicting forest cover types from cartographic variables. Computers and Electronics in Agriculture 24 (1999): 131–151.
+Blackard, J.A., Dean, D.J., 1999. Comparative accuracies of artificial neural networks and discriminant analysis in predicting forest cover types from cartographic variables. *Computers and Electronics in Agriculture* 24 (1999): 131–151.
+
 Coughlin, K., and Lesley Janet Gray. "A continuum of sudden stratospheric warmings." *Journal of the Atmospheric Sciences* 66.2 (2009): 531-540.
-Li, M., Cheng, Y., Zhao, H., 2004. Unlabeled Data Classification via Support Vector Machines and k-means Clustering. Proceedings of the International Conference on Computer Graphics, Imaging and Visualization (CGIV’04).
-Kijewska, A., Bluszcz, A., 2015. Research of varying levels of greenhouse gas emissions in European countries using the k-means method. Atmospheric Pollution Research 7 (2016):935-944
+
+Li, M., Cheng, Y., Zhao, H., 2004. Unlabeled Data Classification via Support Vector Machines and k-means Clustering.* Proceedings of the International Conference on Computer Graphics*, Imaging and Visualization (CGIV’04).
+
+Kijewska, A., Bluszcz, A., 2015. Research of varying levels of greenhouse gas emissions in European countries using the k-means method. *Atmospheric Pollution Research* 7 (2016):935-944
+
 Kusrini, K. 2015. Grouping of Retail Items by Using K-Means Clustering.  Procedia Computer Science 72 ( 2015 ): 495–502.
-Perrone, M.P., Connell, S.D., 2000. K-Means Clustering for Hidden Markov Models. Proceedings of the Seventh International Workshop on Frontiers in Handwriting Recognition. 
+Perrone, M.P., Connell, S.D., 2000. K-Means Clustering for Hidden Markov Models. *Proceedings of the Seventh International Workshop on Frontiers in Handwriting Recognition*. 
 
