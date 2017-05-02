@@ -2,7 +2,7 @@
   * [Introduction](#introduction)
   * [Parallel Kmeans Algorithms](#parallel-kmeans-algorithms)
       * [OpenMP, MPI and hybrid MPI-OpenMP parallelization](#openmp-mpi-and-hybrid-mpi-openmp-parallelization)
-      * [Advanced Feature: CUDA](#advanced-features-cuda)
+      * [Advanced Feature: CUDA](#advanced-feature-cuda)
   * [Applications](#applications)
       * [Forest Cover Type Classification](#forest-cover-type-classification)
       * [Advanced Feature: Detecting Abnormal Climate Events](#advanced-feature-detecting-abnormal-climate-events)
@@ -70,7 +70,7 @@ Interestingly, for N_MPI*n_omp=32, we have tested 4 cases (N_MPI,n_omp) = (32,1)
 Given the massive potential of parallelism on GPU, we implemented a parallel version of k-means algorithm using Nvidia CUDA library. In our implementation, we parallelize the E-step by distributing the computations of the nearest distance over blocks on "device". Also, 
 we use reduction to help check the convergence of clustering (see the "reduce" function). For M-step, we decide not to parallelize (parallelize means using reduction in this case), because by including the time for data to tranfer between device and host, which is a huge burden, the parallel version has no outstanding advantages over the serial version of M-step. Similar to the OpenMP version, our focus is also on the E-step. [(View our CUDA code)](Parallel_Algorithm/Cuda/kmeans_cdf.cu)
 
-Generally, we see that the timing and scaling is quite promising when the number of threads per block is less than 32. The "other" portion is no doubt the data tranfer between device and host, and it's even a more severe bottleneck than the serial E-step. By the way, we can definitely improve this by using better I/O hardware, i.e. using SSD instead of EBS volume for the GPU instance. Also, note that compared to OpenMP/MPI version, the time of E-step using CUDA is sinigicantly shorter. 
+Generally, we see that the timing and scaling is quite promising when the number of threads per block is less than 32, which is also the wrap size. The "other" portion is no doubt the data tranfer between device and host, and it's even a more severe bottleneck than the serial M-step. By the way, we can definitely improve this by using better I/O hardware, i.e. using SSD instead of EBS volume for the ec2 instance, and optimizing memory access, e.g. using shared memory as possible and coalesce memory operations. Also, note that compared to OpenMP/MPI version, the time of E-step using CUDA is sinigicantly shorter. 
 
 <p align="center">
 <img src="Timing_Results/plots/Cuda_scaling.jpg" width="720">
@@ -78,7 +78,7 @@ Generally, we see that the timing and scaling is quite promising when the number
 
 The weird bump up as the number of threads goes up to 64 is because we run out of shared memory, but we're not sure why it affects the M-step so much. 
 
-For optimization, currently we've used parallel reduction to speedup the checking of convergence, and matrix transpose to improve memory access locality as the number of points is significantely larger than the number of features. We haven't tried deploying this version on multiple GPU, because the documentation is rare online and a single Tesla K80 GPU has already enough CUDA cores (4992 cores, 26 SMs, 2048 threads per SM) to parallelize our computation.
+For optimization, currently we've used parallel reduction to speedup the checking of convergence, and matrix transpose to improve memory access locality as the number of points is significantely larger than the number of features. We haven't tried deploying this version on multiple GPU, because the documentation is rare online and a single Tesla K80 GPU already has enough capacity (4992 cores, 26 SMs, 2048 threads per SM) to parallelize our computation.
 
 ---
 # Applications
