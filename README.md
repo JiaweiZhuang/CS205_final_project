@@ -2,7 +2,7 @@
   * [Introduction](#introduction)
   * [Parallel Kmeans Algorithms](#parallel-kmeans-algorithms)
       * [OpenMP, MPI and hybrid MPI-OpenMP parallelization](#openmp-mpi-and-hybrid-mpi-openmp-parallelization)
-      * [Advanced Feature: Cuda](#advanced-features-cuda)
+      * [Advanced Feature: CUDA](#advanced-features-cuda)
   * [Applications](#applications)
       * [Forest Cover Type Classification](#forest-cover-type-classification)
       * [Advanced Feature: Detecting Abnormal Climate Events](#advanced-feature-detecting-abnormal-climate-events)
@@ -179,7 +179,7 @@ Admittedly, there are more complicated algorithms that work better than k-means 
 ---
 # Computational Platforms and Software Libraries
 
-## Amazon EC2 cloud computing environment
+## Amazon EC2 cloud computing environment (OpenMP & MPI)
 
 Although MPI programs typically run on local HPC facilities like Harvard's Odyssey, we found that MPI jobs at small-to-medium-scales (e.g. < 64 cores) can also run very efficiently on cloud platforms like Amazon EC2. This gives us great flexibility in requesting computational resources, so that we can finish simulations very quickly without worrying about job pending on Odyssey.
 
@@ -187,9 +187,17 @@ The instance we use for the timing tests is cc2.8xlarge [(see detailed cpuinfo)]
 
 We have installed various software libraries to facilitate our K-mean application. An EC2 AMI is made public the so that others can also run our codes directly without installing those libraries on their own. Search for "ami-3f79ef29" or  "GCC_NetCDF_MPI_Conda_04162017" in the N. Virginia region.
 
+## Amazon EC2 cloud computing environment (CUDA)
+
+The instance we use for timing tests is p2.xlarge, with 1 Tesla K80 GPU, 4 "virtual" CPUs. For the K80 GPU, it has 4992 CUDA cores, 26 SMs, and 2048 threads per SM. 
+
 ## The OpenMPI library
 
 We built OpenMPI 2.1.0 upon the gcc4.8.3 compiler, to get the wrapped "mpicc" compiler. The script for building this library is available [here](Build_Library/openmpi_build/install_openmpi.sh).
+
+## The Cuda library
+
+We use the CUDA 7.5 and the nvcc compiler included in the toolkit. For convenience, there is a pre-built AMI: search "ami-52f7b345" in the N. Virginia region.
 
 ## The NetCDF4 library for data I/O
 
