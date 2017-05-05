@@ -168,6 +168,12 @@ Fig 2 shows the temperature anomaly over the stratosphere for both clusters. The
 Figure 2: Averaged temperature anomaly for each cluster
 </p>
 
+---
+> #### Silhouette Score
+> The Silhouette coefficient is calculated using the mean intra-cluster distance *a* and the mean nearest-cluster distance *b* for each sample. The Silhouette coefficient for a sample is defined as (b-a)/max(a,b), where *a* is the mean intra-cluster distance, and *b* is the distance between a sample and the nearest cluster that the sample is not a part of. The Silhouette coefficient is a measure of the ratio between averaged intra-cluster similarity and cross-cluster similarity. Silhouette coefficients near +1 indicate that the sample is far away from the neighboring clusters. A value of 0 indicates that the sample is on or very close to the decision boundary between two neighboring clusters and negative values indicate that those samples might have been assigned to the wrong cluster. Therefore Silhouette coefficient can be a useful metric to evaluate the clustering results. 
+
+---
+
 The vortex structure shown in Fig. 3 is consistent with the temperature anomaly. For normal events, the polar vortex centers at the pole, while the vortex is displaced during abnormal warming period. These results are consistent with the findings from Coughlin and Gray, 2009, in which the analysis is based on observational data. 
 <p align="center">
 <img src="Data_Analysis/figures/PV.png" width="480">
