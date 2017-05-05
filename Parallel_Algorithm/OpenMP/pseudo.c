@@ -1,6 +1,5 @@
 do{
-    dist_sum_old = dist_sum_new;
-    dist_sum_new = 0.0;
+    reset_old_variable_values(...)
     // E-Step: assign points to the nearest cluster center
     for (i = 0; i < N_samples; i++) {
         k_best = 0;
