@@ -22,9 +22,15 @@ A typical approach for k-mean clustering is Expectation–Maximization (E–M). 
 <img src="Other_Image/Kmean_illustration/Kmeans.gif" width="640">
 </p>
 
+The pseudo C-code for this algorithm is shown below. X[N_samples][N_features] 
+<p align="center">
+<img src="Other_Image/pseudo.png" width="640">
+</p>
+
+
 ---
 # Parallel Kmeans Algorithms
-
+aa
 ## OpenMP, MPI and hybrid MPI-OpenMP parallelization
 
 ### OpenMP
