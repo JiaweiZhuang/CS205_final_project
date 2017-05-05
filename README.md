@@ -22,10 +22,13 @@ A typical approach for k-mean clustering is Expectation–Maximization (E–M). 
 <img src="Other_Image/Kmean_illustration/Kmeans.gif" width="640">
 </p>
 
-The pseudo C-code for this algorithm is shown below, which is an abbreviated version of our real code. X[N_samples][N_features] is the data points. We always use i as the looping index for samples, j as the index for feature dimensions, and k as the index for clusters. This notation is consistent throught out the real code. Other variables should be self-explanatory.
+The pseudo C-code for this algorithm is shown below, which is an abbreviated version of our real code. 
+
 <p align="center">
 <img src="Other_Image/pseudo.png" width="480">
 </p>
+
+X[N_samples][N_features] is the data points. We always use i as the looping index for samples, j as the index for feature dimensions, and k as the index for clusters. This notation is consistent throught out the real code. Other variables should be self-explanatory.
 
 ---
 # Parallel Kmeans Algorithms
