@@ -5,7 +5,7 @@
       * [Advanced Feature: CUDA](#advanced-feature-cuda)
   * [Applications](#applications)
       * [Forest Cover Type Classification](#forest-cover-type-classification)
-      * [Advanced Feature: Detecting Abnormal Climate Events](#advanced-feature-detecting-abnormal-climate-events)
+      * [Advanced Feature: Abnormal Climate Events Identification](#advanced-feature-abnormal-climate-events-identification)
   * [Discussion](#discussion)
   * [Computational Platforms and Software Libraries](#computational-platforms-and-software-libraries)
   * [References](#references)
@@ -130,7 +130,7 @@ We choose K from 7 to 30, repeat the above steps and find that 23 is the best cl
 
 The classification accuracy is not very high, so we would like to take a further look at the dataset. It is hard to directly visualize the dataset due to its high feature dimension, so we apply PCA to perform dimension reduction first and then plot the scatter graph based on the first two principle components. We choose 10 percent out of the testing samples, and color code the points using the true labels(the first graph) and the predicted labels(the second graph). Now we could see that, the original data points are acutally mixed on the 2D projection. Our k-means algorithm actually does a good clustering job since the lumps are seperated well in color. Therefore, for this problem, more complicated algorithms such as artifical neural network would do a better job (Dean, 1999) with classification accuracy at around 70%. But our result is already much better than the randomly classification which only holds an accuracy at around 14%.
 
-## Advanced Feature: Detecting Abnormal Climate Events
+## Advanced Feature: Abnormal Climate Events Identification
 In this section, we will explore the application of k-means clustering technique on identifying abnormal climate events. Abnormal climate events are usually identified if a highly simplified index exceeds an arbitrary threshold. For example, El Nino events are identified if the Nino 3.4 index exceeds the threshold of 0.5&deg;C. This simple criteria works in some cases, however, there are two caveats associated with this methodology. First, the highly simplified index may not well capture all the main dynamic aspects. Second, setting an arbitrary threshold makes it a subjective way of identifying abnormal events.  
 
 K-means clustering serves as a powerful technique in dealing with those caveats. First, instead of using a highly simplified index, a high dimensional feature vector characterizing the event from multiple dynamical aspects can be utilized. In addition, k-means clustering is highly scalable to cluster large datasets, such as those from simulations. Second, k-means clustering is able to identify different states in a completely objective manner with no preconceived notion of the groups and no preselection on the basis of known influencing factors (Coughlin and Gray, 2009). Third, k-means clustering technique is especially useful for detecting abnormal events, because k-means clustering easily allows for unevenly distributed clusters, whereas some other techniques, such as hierachical clustering, tend to determine clusters of similar sizes.
