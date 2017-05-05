@@ -32,7 +32,7 @@ X[N_samples][N_features] is the data points. We always use i as the looping inde
 
 ---
 # Parallel Kmeans Algorithms
-aa
+
 ## OpenMP, MPI and hybrid MPI-OpenMP parallelization
 
 ### OpenMP
